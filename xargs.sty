@@ -1,0 +1,347 @@
+%%
+%% This is file `xargs.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% xargs.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2007 by Manuel P\'egouri\'e-Gonnard <mpg@math.jussieu.fr>
+%% 
+%% This work may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3c of this license
+%% or (at your option) any later version.  The latest version of this
+%% license is in:
+%% 
+%%    http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3c or later is part of all distributions of LaTeX version
+%% 2006/05/20 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Manuel P\'egouri\'e-Gonnard.
+%% 
+%% This work consists of the files xargs.dtx and xargs.ins
+%% and the derived files xargs.sty and xargs.pdf.
+%% 
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{xargs}
+  [2007/10/20 v1.0  extending optional arguments facilities (mpg)]
+\RequirePackage{xkeyval}
+\@ifdefinable\xargs@max{\newcount\xargs@max}
+\@ifdefinable\xargs@temp\relax
+\@ifdefinable\xargs@toksa{\newtoks\xargs@toksa}
+\@ifdefinable\xargs@toksb{\newtoks\xargs@toksb}
+\newcommand*\@protected@testopt@xargs[1]{%
+  \ifx\protect\@typeset@protect
+    \expandafter\xargs@read
+  \else
+    \@x@protect#1%
+  \fi}
+\newcommand*\xargs@read[2]{%
+  \xargs@toksa{#1}%
+  \xargs@toksb{#2}%
+  \xargs@continue}
+\newcommand\xargs@continue{%
+  \expandafter\xargs@pick@next\the\xargs@toksb,\@nil
+  \xargs@temp}
+\@ifdefinable\xargs@pick@next{%
+  \def\xargs@pick@next#1,#2\@nil{%
+    \def\xargs@temp{#1}%
+    \xargs@toksb{#2}%
+    \ifx\xargs@temp\empty
+      \def\xargs@temp{\the\xargs@toksa}%
+    \fi}}
+\newcommand\xargs@put@arg[1]{%
+  \xargs@toksa\expandafter{\the\xargs@toksa{#1}}%
+  \xargs@continue}
+\newcommand*\xargs@test@opt[1]{%
+  \xargs@ifnextchar[%]
+    {\xargs@put@opt}%
+    {\xargs@put@opt[{#1}]}}
+\@ifdefinable\xargs@put@opt{%
+  \long\def\xargs@put@opt[#1]{%
+    \xargs@toksa\expandafter{\the\xargs@toksa[{#1}]}%
+  \xargs@continue}}
+\newcommand\xargs@ifnextchar[3]{%
+  \let\xargs@temp\empty
+  \let\reserved@d=#1%
+  \def\reserved@a{#2}%
+  \def\reserved@b{#3}%
+  \futurelet\@let@token\xargs@ifnch}
+\newcommand\xargs@ifnch{%
+  \ifx\@let@token\@sptoken
+    \edef\xargs@temp{\xargs@temp\space}%
+    \let\reserved@c\xargs@xifnch
+  \else
+    \ifx\@let@token\reserved@d
+      \let\reserved@c\reserved@a
+    \else
+      \def\reserved@c{\expandafter\reserved@b\xargs@temp}%
+    \fi
+  \fi
+  \reserved@c}
+\@ifdefinable\xargs@xifnch{%
+  \expandafter\def\expandafter\xargs@xifnch\space{%
+    \futurelet\@let@token\xargs@ifnch}}
+\providecommand\@namenewc[1]{%
+  \expandafter\newcommand\csname #1\endcsname}
+\@namenewc{xargs@action@1}{\xargs@put@arg}
+\@namenewc{xargs@action@2}{\xargs@put@arg}
+\@namenewc{xargs@action@3}{\xargs@put@arg}
+\@namenewc{xargs@action@4}{\xargs@put@arg}
+\@namenewc{xargs@action@5}{\xargs@put@arg}
+\@namenewc{xargs@action@6}{\xargs@put@arg}
+\@namenewc{xargs@action@7}{\xargs@put@arg}
+\@namenewc{xargs@action@8}{\xargs@put@arg}
+\@namenewc{xargs@action@9}{\xargs@put@arg}
+\newcommand*\xargs@def@key[2]{%
+  \define@key[xargs]{key}{#1}[]{%
+    \ifnum\xargs@max<#1
+      \PackageError{xargs}{%
+        Illegal argument label in\MessageBreak
+        optional arguments description%
+        }{%
+        You are trying to make optional an argument whose label (#1)
+        \MessageBreak is higher than the total number (\the\xargs@max)
+        of parameters. \MessageBreak This can't be done and your demand
+        will be ignored.}%
+    \else
+      \expandafter\expandafter\expandafter
+      \ifx\csname xargs@action@#1\endcsname\xargs@put@arg \else
+        \PackageWarning{xargs}{%
+          Argument #1 was allready given a default value.\MessageBreak
+          Previous value will be overriden.\MessageBreak}%
+      \fi
+      \@namedef{xargs@action@#1}{\xargs@test@opt{##1}}%
+      #2%
+    \fi}}
+\newif\ifxargs@firstopt@
+\newif\ifxargs@otheropt@
+\xargs@def@key1\xargs@firstopt@true
+\xargs@def@key2\xargs@otheropt@true \xargs@def@key3\xargs@otheropt@true
+\xargs@def@key4\xargs@otheropt@true \xargs@def@key5\xargs@otheropt@true
+\xargs@def@key6\xargs@otheropt@true \xargs@def@key7\xargs@otheropt@true
+\xargs@def@key8\xargs@otheropt@true \xargs@def@key9\xargs@otheropt@true
+\newcommand\xargs@setkeys[1]{%
+  \setkeys*[xargs]{key}{#1}%
+  \xargs@check@keys}
+\newcommand\xargs@check@keys{%
+  \ifx\XKV@rm\empty \else
+    \xargs@toksa\expandafter{\XKV@rm}%
+    \PackageError{xargs}{%
+      Illegal argument label in\MessageBreak
+      optional arguments description%
+      }{%
+      You can only use non-zero digits as argument labels.\MessageBreak
+      You wrote: "\the\xargs@toksa".\MessageBreak
+      I can't understand this and I'm going to ignore it.}%
+  \fi}
+\newcommand\xargs@add@args[1]{%
+  \xargs@toksa\expandafter{\the\xargs@toksa #1,}%
+  \expandafter
+  \ifx\@car#1\@nil\xargs@put@arg
+    \xargs@toksb\expandafter\expandafter\expandafter{%
+      \the\expandafter\xargs@toksb\expandafter##\the\@tempcnta}%
+  \else
+    \xargs@toksb\expandafter\expandafter\expandafter{%
+      \the\expandafter\xargs@toksb\expandafter
+      [\expandafter##\the\@tempcnta]}%
+  \fi}
+\@ifdefinable\xargs@process@keys{%
+  \long\def\xargs@process@keys#1[#2]{%
+  \begingroup
+  \xargs@setkeys{#2}%
+  \xargs@toksa{}\xargs@toksb{}%
+  \@tempcnta0
+  \@whilenum \xargs@max>\@tempcnta \do{%
+    \advance\@tempcnta1
+    \expandafter\expandafter\expandafter\xargs@add@args
+    \expandafter\expandafter\expandafter{%
+      \csname xargs@action@\the\@tempcnta\endcsname}}%
+  \ifxargs@otheropt@ \else
+    \ifxargs@firstopt@
+      \let\xargs@test@opt\@firstofone
+      \xargs@toksa\expandafter\expandafter\expandafter
+      \expandafter\expandafter\expandafter\expandafter{%
+        \csname xargs@action@1\endcsname}
+    \fi
+  \fi
+  \expandafter\expandafter\expandafter\xargs@choose@def
+  \expandafter\expandafter\expandafter#1%
+  \expandafter\expandafter\the\xargs@max
+  \expandafter{\the\xargs@toksa}}}
+\newcommand\xargs@choose@def[4]{%
+  \expandafter\expandafter\expandafter
+  \endgroup
+  \ifxargs@otheropt@
+    \expandafter\xargs@def@cmd\expandafter#1\expandafter{%
+      \the\xargs@toksb}{#3}{#4}%
+  \else
+    \ifxargs@firstopt@
+      \@xargdef#1[#2][#3]{#4}%
+    \else
+      \@argdef#1[#2]{#4}%
+    \fi
+  \fi}
+\newcommand\xargs@def@cmd[4]{%
+  \@ifdefinable#1{%
+    \expandafter\def\expandafter#1\expandafter{%
+      \expandafter\@protected@testopt@xargs
+      \expandafter#1\csname \string#1\endcsname{#3}}%
+    \l@ngrel@x\expandafter\def\csname \string#1\endcsname#2{#4}}}
+\newcommand\newcommandx{%
+  \@star@or@long\xargs@newc}
+\newcommand*\xargs@newc[1]{%
+  \@testopt{\xargs@set@max{#1}}{0}}
+\@ifdefinable\xargs@set@max{%
+  \def\xargs@set@max#1[#2]{%
+    \kernel@ifnextchar[%]
+      {\xargs@max=#2 \xargs@check@max{#1}}%
+      {\@argdef#1[#2]}}}
+\newcommand\xargs@check@max{%
+  \ifcase\xargs@max \or\or\or\or\or\or\or\or\or\else
+    \PackageError{xargs}{Illegal number, treated as zero}{The total
+      number of arguments must be in the 0..9 range.\MessageBreak
+      Since your value is illegal, i'm going to use 0 instead.}
+    \xargs@max0
+  \fi
+  \xargs@process@keys}
+\@ifdefinable\CheckCommandx{%
+  \def\CheckCommandx{%
+    \@star@or@long\xargs@CheckC}}
+\@onlypreamble\CheckCommandx
+\@ifdefinable\xargs@CheckC{%
+  \def\xargs@CheckC#1{%
+    \@testopt{\xargs@check@a#1}0}}
+\@onlypreamble\xargs@CheckC
+\@ifdefinable\xargs@check@a{%
+  \def\xargs@check@a#1[#2]{%
+    \kernel@ifnextchar[%]
+      {\xargs@check@b#1[#2]}%
+      {\xargs@check@c#1{[#2]}}}}
+\@onlypreamble\xargs@check@a
+\@ifdefinable\xargs@chech@b{%
+  \def\xargs@check@b#1[#2][#3]{%
+    \xargs@check@c{#1}{[#2][{#3}]}}}
+\@onlypreamble\xargs@check@b
+\newcommand\xargs@check@c[3]{%
+  \xargs@toksa{#1}%
+  \expandafter\let\csname\string\reserved@a\endcsname\relax
+  \xargs@renewc\reserved@a#2{#3}%
+  \@ifundefined{\string\reserved@a}{%
+    \ifx#1\reserved@a \else
+      \xargs@check@complain
+    \fi
+    }{%
+    \expandafter
+    \ifx\csname\string#1\expandafter\endcsname
+        \csname\string\reserved@a\endcsname
+      \begingroup\escapechar 92
+      \xargs@check@d
+    \else
+      \xargs@check@complain
+    \fi}}
+\@onlypreamble\xargs@check@c
+\def\xargs@temp{\@protected@testopt}
+{ \escapechar 92
+  \global\xargs@toksa\expandafter{\meaning\xargs@temp}}
+\def\xargs@temp#1 \@nil{\def\xargs@temp{#1}}
+\expandafter\xargs@temp\the\xargs@toksa\@nil
+\@ifdefinable\xargs@check@d{%
+  \expandafter\newcommand\expandafter\xargs@check@d\expandafter{%
+    \expandafter\expandafter\expandafter\xargs@check@e
+    \expandafter\meaning\expandafter\reserved@a\xargs@temp\@nil}}
+\@onlypreamble\xargs@check@d
+\@ifdefinable\xargs@check@e{%
+  \expandafter\def\expandafter\xargs@check@e
+  \expandafter#\expandafter1\xargs@temp#2\@nil{%
+    \endgroup
+    \ifx\empty#1\empty \else
+      \xargs@check@complain
+    \fi}}
+\@onlypreamble\xargs@check@e
+\newcommand\xargs@check@complain{%
+  \PackageWarningNoLine{xargs}{Command \the\xargs@toksa has changed.
+    \MessageBreak Check if current package is valid}}
+\@onlypreamble\xargs@check@complain
+\newcommand\renewcommandx{%
+  \@star@or@long\xargs@renewc}
+\newcommand*\xargs@renewc[1]{%
+  \begingroup\escapechar\m@ne
+    \xdef\@gtempa{{\string#1}}%
+  \endgroup
+  \expandafter\@ifundefined\@gtempa{%
+    \PackageError{xargs}{\noexpand#1undefined}{%
+      Try typing \space <return> \space to proceed.\MessageBreak
+      If that doesn't work, type \space X <return> \space to quit.}}%
+    \relax
+  \let\@ifdefinable\@rc@ifdefinable
+  \xargs@newc#1}
+\newcommand\providecommandx{%
+  \@star@or@long\xargs@providec}
+\newcommand*\xargs@providec[1]{%
+  \begingroup\escapechar\m@ne
+    \xdef\@gtempa{{\string#1}}%
+  \endgroup
+  \expandafter\@ifundefined\@gtempa
+    {\def\reserved@a{\xargs@newc#1}}%
+    {\def\reserved@a{\renew@command\reserved@a}}%
+  \reserved@a}
+\newcommand\DeclareRobustCcommandx{%
+  \@star@or@long\xargs@DRC}
+\newcommand*\xargs@DRC[1]{%
+  \ifx#1\@undefined\else\ifx#1\relax\else
+    \PackageInfo{xargs}{Redefining \string#1}%
+  \fi\fi
+  \edef\reserved@a{\string#1}%
+  \def\reserved@b{#1}%
+  \edef\reserved@b{\expandafter\strip@prefix\meaning\reserved@b}%
+  \edef#1{%
+    \ifx\reserved@a\reserved@b
+      \noexpand\x@protect
+      \noexpand#1%
+    \fi
+      \noexpand\protect
+      \expandafter\noexpand\csname
+      \expandafter\@gobble\string#1 \endcsname}%
+  \let\@ifdefinable\@rc@ifdefinable
+  \expandafter\xargs@newc\csname
+  \expandafter\@gobble\string#1 \endcsname}
+\newcommand\newenvironmentx{%
+  \@star@or@long\xargs@newenv}
+\newcommand*\xargs@newenv[1]{%
+  \@testopt{\xargs@newenva#1}0}
+\@ifdefinable\xargs@newenva{%
+  \def\xargs@newenva#1[#2]{%
+    \kernel@ifnextchar[%]
+      {\xargs@newenvb#1[#2]}%
+      {\xargs@new@env{#1}{[#2]}}}}
+\@ifdefinable\xargs@newenvb{%
+  \def\xargs@newenvb#1[#2][#3]{%
+    \xargs@new@env{#1}{[#2][{#3}]}}}
+\newcommand\xargs@new@env[4]{%
+  \@ifundefined{#1}{%
+    \expandafter\let\csname#1\expandafter\endcsname
+    \csname end#1\endcsname}%
+    \relax
+  \expandafter\xargs@newc
+    \csname #1\endcsname#2{#3}%
+  \l@ngrel@x\expandafter\def\csname end#1\endcsname{#4}}
+\newcommand\renewenvironmentx{%
+  \@star@or@long\xargs@renewenv}
+\newcommand*\xargs@renewenv[1]{%
+  \@ifundefined{#1}{%
+    \PackageError{xargs}{\noexpand#1undefined}{%
+      Try typing \space <return> \space to proceed.\MessageBreak
+      If that doesn't work, type \space X <return> \space to quit.}}%
+    \relax
+  \expandafter\let\csname#1\endcsname\relax
+  \expandafter\let\csname end#1\endcsname\relax
+  \xargs@newenv{#1}}
+\endinput
+%%
+%% End of file `xargs.sty'.
