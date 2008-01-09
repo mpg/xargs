@@ -6,30 +6,12 @@
 %%
 %% xargs.dtx  (with options: `package')
 %% 
-%% This is a generated file.
-%% 
-%% Copyright (C) 2007 by Manuel P\'egouri\'e-Gonnard <mpg@math.jussieu.fr>
-%% 
-%% This work may be distributed and/or modified under the conditions of
-%% the LaTeX Project Public License, either version 1.3c of this license
-%% or (at your option) any later version.  The latest version of this
-%% license is in:
-%% 
-%%    http://www.latex-project.org/lppl.txt
-%% 
-%% and version 1.3c or later is part of all distributions of LaTeX version
-%% 2006/05/20 or later.
-%% 
-%% This work has the LPPL maintenance status `maintained'.
-%% 
-%% The Current Maintainer of this work is Manuel P\'egouri\'e-Gonnard.
-%% 
-%% This work consists of the files xargs.dtx and xargs.ins
-%% and the derived files xargs.sty and xargs.pdf.
+%% xargs package by Manuel P\'egouri\'e-Gonnard <mpg@math.jussieu.fr>
+%% This is a generated file. See xargs.dtx for license information.
 %% 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{xargs}
-  [2007/10/20 v1.0  extending optional arguments facilities (mpg)]
+  [2007/12/12 1.0+ \space extended optional arguments facilities \space (mpg)]
 \RequirePackage{xkeyval}
 \@ifdefinable\xargs@max{\newcount\xargs@max}
 \@ifdefinable\xargs@temp\relax
@@ -87,6 +69,21 @@
 \@ifdefinable\xargs@xifnch{%
   \expandafter\def\expandafter\xargs@xifnch\space{%
     \futurelet\@let@token\xargs@ifnch}}
+\@ifdefinable\xargs@key@prefix{%
+  \define@key[xargs]{key}{addprefix}{%
+    \global\expandafter\def\expandafter\xargs@prefix\expandafter{%
+      \xargs@prefix#1}%
+    \xargs@makeshort#1\long\@nil}}
+\@ifdefinable\xargs@makeshort{%
+  \def\xargs@makeshort#1\long#2{%
+    \expandafter\gdef\expandafter\xargs@shortpref\expandafter{%
+      \xargs@shortpref#1}%
+    \ifx#2\@nil \else
+      \expandafter\xargs@makeshort\expandafter#2%
+    \fi}}
+\newcommand\xargs@star@or@long[1]{%
+  \global\let\xargs@shortpref\@empty
+  \@ifstar{\gdef\xargs@prefix{}#1}{\gdef\xargs@prefix{\long}#1}}
 \providecommand\@namenewc[1]{%
   \expandafter\newcommand\csname #1\endcsname}
 \@namenewc{xargs@action@1}{\xargs@put@arg}
@@ -99,26 +96,27 @@
 \@namenewc{xargs@action@8}{\xargs@put@arg}
 \@namenewc{xargs@action@9}{\xargs@put@arg}
 \newcommand*\xargs@def@key[2]{%
-  \define@key[xargs]{key}{#1}[]{%
-    \ifnum\xargs@max<#1
-      \PackageError{xargs}{%
-        Illegal argument label in\MessageBreak
-        optional arguments description%
-        }{%
-        You are trying to make optional an argument whose label (#1)
-        \MessageBreak is higher than the total number (\the\xargs@max)
-        of parameters. \MessageBreak This can't be done and your demand
-        will be ignored.}%
-    \else
-      \expandafter\expandafter\expandafter
-      \ifx\csname xargs@action@#1\endcsname\xargs@put@arg \else
-        \PackageWarning{xargs}{%
-          Argument #1 was allready given a default value.\MessageBreak
-          Previous value will be overriden.\MessageBreak}%
-      \fi
-      \@namedef{xargs@action@#1}{\xargs@test@opt{##1}}%
-      #2%
-    \fi}}
+  \expandafter\@ifdefinable\csname xargs@key@#1\endcsname{%
+    \define@key[xargs]{key}{#1}[]{%
+      \ifnum\xargs@max<#1
+        \PackageError{xargs}{%
+          Illegal argument label in\MessageBreak
+          optional arguments description%
+          }{%
+          You are trying to make optional an argument whose label (#1)
+          \MessageBreak is higher than the total number (\the\xargs@max)
+          of parameters. \MessageBreak This can't be done and your
+          demand will be ignored.}%
+      \else
+        \expandafter\expandafter\expandafter
+        \ifx\csname xargs@action@#1\endcsname\xargs@put@arg \else
+          \PackageWarning{xargs}{%
+            Argument #1 was allready given a default value.\MessageBreak
+            Previous value will be overriden.\MessageBreak}%
+        \fi
+        \@namedef{xargs@action@#1}{\xargs@test@opt{##1}}%
+        #2%
+      \fi}}}
 \newif\ifxargs@firstopt@
 \newif\ifxargs@otheropt@
 \xargs@def@key1\xargs@firstopt@true
@@ -145,56 +143,54 @@
   \expandafter
   \ifx\@car#1\@nil\xargs@put@arg
     \xargs@toksb\expandafter\expandafter\expandafter{%
-      \the\expandafter\xargs@toksb\expandafter##\the\@tempcnta}%
+      \the\expandafter\xargs@toksb\expandafter##\the\count@}%
   \else
     \xargs@toksb\expandafter\expandafter\expandafter{%
       \the\expandafter\xargs@toksb\expandafter
-      [\expandafter##\the\@tempcnta]}%
+      [\expandafter##\the\count@]}%
   \fi}
 \@ifdefinable\xargs@process@keys{%
   \long\def\xargs@process@keys#1[#2]{%
-  \begingroup
-  \xargs@setkeys{#2}%
-  \xargs@toksa{}\xargs@toksb{}%
-  \@tempcnta0
-  \@whilenum \xargs@max>\@tempcnta \do{%
-    \advance\@tempcnta1
-    \expandafter\expandafter\expandafter\xargs@add@args
-    \expandafter\expandafter\expandafter{%
-      \csname xargs@action@\the\@tempcnta\endcsname}}%
-  \ifxargs@otheropt@ \else
-    \ifxargs@firstopt@
-      \let\xargs@test@opt\@firstofone
-      \xargs@toksa\expandafter\expandafter\expandafter
-      \expandafter\expandafter\expandafter\expandafter{%
-        \csname xargs@action@1\endcsname}
+    \begingroup
+    \xargs@setkeys{#2}%
+    \xargs@toksa{}\xargs@toksb{}%
+    \count@\z@
+    \@whilenum\xargs@max>\count@ \do{%
+      \advance\count@\@ne
+      \expandafter\expandafter\expandafter\xargs@add@args
+      \expandafter\expandafter\expandafter{%
+        \csname xargs@action@\the\count@\endcsname}}%
+    \ifxargs@otheropt@ \else
+      \ifxargs@firstopt@
+        \let\xargs@test@opt\@firstofone
+        \xargs@toksa\expandafter\expandafter\expandafter
+        \expandafter\expandafter\expandafter\expandafter{%
+          \csname xargs@action@1\endcsname}%
+      \fi
     \fi
-  \fi
-  \expandafter\expandafter\expandafter\xargs@choose@def
-  \expandafter\expandafter\expandafter#1%
-  \expandafter\expandafter\the\xargs@max
-  \expandafter{\the\xargs@toksa}}}
-\newcommand\xargs@choose@def[4]{%
-  \expandafter\expandafter\expandafter
-  \endgroup
-  \ifxargs@otheropt@
-    \expandafter\xargs@def@cmd\expandafter#1\expandafter{%
-      \the\xargs@toksb}{#3}{#4}%
-  \else
-    \ifxargs@firstopt@
-      \@xargdef#1[#2][#3]{#4}%
-    \else
-      \@argdef#1[#2]{#4}%
-    \fi
-  \fi}
-\newcommand\xargs@def@cmd[4]{%
+    \edef\xargs@temp{%
+      \ifxargs@otheropt@ \noexpand\xargs@xargsdef \else
+        \ifxargs@firstopt@ \noexpand\xargs@xargdef \else
+          \noexpand\xargs@argdef
+      \fi\fi
+      \noexpand#1%
+      \expandafter\noexpand\csname\string#1\endcsname
+      {\the\xargs@toksa}{\the\xargs@toksb}}%
+    \expandafter\endgroup
+    \xargs@temp}}
+\newcommand\xargs@argdef[5]{%
   \@ifdefinable#1{%
-    \expandafter\def\expandafter#1\expandafter{%
-      \expandafter\@protected@testopt@xargs
-      \expandafter#1\csname \string#1\endcsname{#3}}%
-    \l@ngrel@x\expandafter\def\csname \string#1\endcsname#2{#4}}}
+    \xargs@prefix\def#1#4{#5}}}
+\newcommand\xargs@xargdef[5]{%
+  \@ifdefinable#1{%
+    \xargs@shortpref\def#1{\@protected@testopt#1#2{#3}}%
+    \xargs@prefix\def#2#4{#5}}}
+\newcommand\xargs@xargsdef[5]{%
+  \@ifdefinable#1{%
+    \xargs@shortpref\def#1{\@protected@testopt@xargs#1#2{#3}}%
+    \xargs@prefix\def#2#4{#5}}}
 \newcommand\newcommandx{%
-  \@star@or@long\xargs@newc}
+  \xargs@star@or@long\xargs@newc}
 \newcommand*\xargs@newc[1]{%
   \@testopt{\xargs@set@max{#1}}{0}}
 \@ifdefinable\xargs@set@max{%
@@ -212,7 +208,7 @@
   \xargs@process@keys}
 \@ifdefinable\CheckCommandx{%
   \def\CheckCommandx{%
-    \@star@or@long\xargs@CheckC}}
+    \xargs@star@or@long\xargs@CheckC}}
 \@onlypreamble\CheckCommandx
 \@ifdefinable\xargs@CheckC{%
   \def\xargs@CheckC#1{%
@@ -247,10 +243,10 @@
     \fi}}
 \@onlypreamble\xargs@check@c
 \def\xargs@temp{\@protected@testopt}
-{ \escapechar 92
-  \global\xargs@toksa\expandafter{\meaning\xargs@temp}}
-\def\xargs@temp#1 \@nil{\def\xargs@temp{#1}}
-\expandafter\xargs@temp\the\xargs@toksa\@nil
+\begingroup \escapechar92 \expandafter\endgroup
+\expandafter\xargs@toksa\expandafter{\meaning\xargs@temp}
+\def\xargs@temp#1 {\def\xargs@temp{#1}}
+\expandafter\xargs@temp\the\xargs@toksa
 \@ifdefinable\xargs@check@d{%
   \expandafter\newcommand\expandafter\xargs@check@d\expandafter{%
     \expandafter\expandafter\expandafter\xargs@check@e
@@ -269,7 +265,7 @@
     \MessageBreak Check if current package is valid}}
 \@onlypreamble\xargs@check@complain
 \newcommand\renewcommandx{%
-  \@star@or@long\xargs@renewc}
+  \xargs@star@or@long\xargs@renewc}
 \newcommand*\xargs@renewc[1]{%
   \begingroup\escapechar\m@ne
     \xdef\@gtempa{{\string#1}}%
@@ -282,7 +278,7 @@
   \let\@ifdefinable\@rc@ifdefinable
   \xargs@newc#1}
 \newcommand\providecommandx{%
-  \@star@or@long\xargs@providec}
+  \xargs@star@or@long\xargs@providec}
 \newcommand*\xargs@providec[1]{%
   \begingroup\escapechar\m@ne
     \xdef\@gtempa{{\string#1}}%
@@ -291,8 +287,8 @@
     {\def\reserved@a{\xargs@newc#1}}%
     {\def\reserved@a{\renew@command\reserved@a}}%
   \reserved@a}
-\newcommand\DeclareRobustCcommandx{%
-  \@star@or@long\xargs@DRC}
+\newcommand\DeclareRobustCommandx{%
+  \xargs@star@or@long\xargs@DRC}
 \newcommand*\xargs@DRC[1]{%
   \ifx#1\@undefined\else\ifx#1\relax\else
     \PackageInfo{xargs}{Redefining \string#1}%
@@ -312,7 +308,7 @@
   \expandafter\xargs@newc\csname
   \expandafter\@gobble\string#1 \endcsname}
 \newcommand\newenvironmentx{%
-  \@star@or@long\xargs@newenv}
+  \xargs@star@or@long\xargs@newenv}
 \newcommand*\xargs@newenv[1]{%
   \@testopt{\xargs@newenva#1}0}
 \@ifdefinable\xargs@newenva{%
@@ -330,9 +326,9 @@
     \relax
   \expandafter\xargs@newc
     \csname #1\endcsname#2{#3}%
-  \l@ngrel@x\expandafter\def\csname end#1\endcsname{#4}}
+  \xargs@prefix\expandafter\def\csname end#1\endcsname{#4}}
 \newcommand\renewenvironmentx{%
-  \@star@or@long\xargs@renewenv}
+  \xargs@star@or@long\xargs@renewenv}
 \newcommand*\xargs@renewenv[1]{%
   \@ifundefined{#1}{%
     \PackageError{xargs}{\noexpand#1undefined}{%

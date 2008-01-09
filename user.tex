@@ -1,0 +1,206 @@
+% fichier de tests pour xargs (commentaires en utf8 : àéïôù)
+
+%%% { section fixe
+\documentclass{article}
+\usepackage[ascii]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{xargs}
+
+
+%% { définitions d'outils de test : \showcmd et \showenv
+\makeatletter
+
+\newcommand\showcmd[1]{%
+  \show#1%
+  \def\xargst@temp{\x@protect}%
+  \xargst@ifmcm{#1}{\xargst@temp}{\xargst@showisp#1}{}%
+  \def\xargst@temp{\protect}%
+  \xargst@ifmcm{#1}{\xargst@temp}{\xargst@showisp#1}{}%
+  \edef\xargst@temp{\string\@protected@testopt}%
+  \xargst@ifmcm{#1}{\xargst@temp}{%
+    \expandafter\show\csname\string#1\endcsname}{}}
+
+\newcommand\xargst@showisp[1]{%
+    \begingroup\escapechar\m@ne\expandafter\endgroup
+    \expandafter\showcmd\csname\string#1 \endcsname}
+
+\newcommand\xargst@ifmcm[2]{%
+  \edef\xargst@temp{\noexpand\xargst@ifmcm@{\meaning#1}{\meaning#2}}%
+  \xargst@temp}
+
+\newcommand*\xargst@ifmcm@[2]{%
+  \def\xargst@temp##1#2##2\@nil{%
+    \ifx\empty##2\empty
+      \expandafter\@secondoftwo
+    \else
+      \expandafter\@firstoftwo
+    \fi}%
+  \xargst@temp#1#2\@nil}
+
+\newcommand\showenv[1]{%
+  \expandafter\showcmd\csname#1\endcsname
+  \expandafter\show\csname end#1\endcsname}
+
+\makeatother
+%% } définitions
+
+%%% } section fixe
+
+%% { test des outils de test sur les macros LaTeX 
+%%   (et valeurs de référence pour le préfixe)
+\begingroup
+% test de \showcmd sur des cs-mots
+%\newcommand\sct{bla}
+%\showcmd\sct
+%\DeclareRobustCommand\sctt{bla}
+%\showcmd\sctt
+%\newcommand\scttt[1][bla]{blabla}
+%\showcmd\scttt
+%\DeclareRobustCommand\sctttt[1][bla]{blabla}
+%\showcmd\sctttt
+% test sur des cs-symbole pour \DRC
+%\DeclareRobustCommand\+{bla}
+%\showcmd\+
+%\DeclareRobustCommand\*[1][bla]{blabla}
+%\showcmd\*
+% test de \showenv
+%\newenvironment{set}{B-bla}{E-bla}
+%\showenv{set}
+%\newenvironment{set*}[1][ouf]{B-bla}{E-bla}
+%\showenv{set*}
+\endgroup
+%% } test des outils de test
+
+%% { macros de definition (ie tt sf \CC) cas simples
+\begingroup
+% newcommandx, trois cas de base (cf choose@def) + @ifdefinable
+%\newcommandx\ncst{blat}
+%\showcmd\ncst
+%\newcommandx\ncstt[2][1=tt1]{blatt}
+%\showcmd\ncstt
+%\newcommandx\ncsttt[2][2=ttt2]{blattt}
+%\showcmd\ncsttt
+%\newcommandx\ncsttt[2][2=non]{horreur} % -> 1 erreur
+%\showcmd\ncsttt % pareil qu'avant
+%% désormais je ne teste plus que le cas non-trivial de choose@def
+% \renewcommandx : un cas + @ifdefinable
+%\renewcommandx\ncst[2][2=rt2]{blart}
+%\showcmd\ncst
+%\renewcommandx\rct[2][2=non]{horreur} % -> 1 erreur
+%\showcmd\rct % undefined
+% \provide command : un cas + @ifdefinable
+%\providecommandx\pcst[2][2=ipt2]{blapt}
+%\showcmd\pcst
+%\procvidecommandx\ncst[2][2=non]{horreur} % doit ne rien faire
+%\showcmd\ncst % toujours [2][2=rt1]{blart}
+% \DRCx : deux cas (cs-mot ou pas) + @ifdefinable
+%\DeclareRobustCommandx\drcst[2][2=drct2]{bladrct}
+%\showcmd\drcst
+%\DeclareRobustCommandx\ncst[2][2=drct2]{redef} % -> warning mais redef
+%\showcmd\ncst % ci-dessus
+% \newenvironmentx : 1 cas + @ifdef
+%\newenvironmentx{net}[2][2=net2]{B-net}{E-net}
+%\showenv{net}
+%\newenvironmentx{net}[2][2=non]{B-pas}{E-bien} % -> 1 erreur
+%\showenv{net} % pareil qu'avant
+% \renewenvironmentx : 1 cas + @ifdef
+%\renewenvironmentx{net}[2][2=rnet2]{B-rnet}{E-rnet}
+%\showenv{net}
+%\renewenvironmentx{net*}[2][2=non]{B-pas}{E-bien} % -> 1 erreur
+%\showenv{net*} % undefined
+\endgroup
+%% } macros de definition (ie tt sf \CC) cas simples
+
+%% { vrac et vieux
+
+%\tracingmacros1
+\begingroup
+% \newcommandx*\reuh[2][2, addprefix=\global\long\protected\long]{(#1|#2)}
+% \newenvironmentx{abc}[2][2, addprefix=\global\protected]{abc}{def}
+%\renewcommandx\reuh[1][addprefix=\global]{X#1X}
+\endgroup
+%\show\abc
+%\showcs\string\abc\endcsname
+%\show\endabc
+%\show\reuh
+%\showcs\string\reuh\endcsname
+% \let\reuh\relax
+% \newcommand\reuh[2][]{abc}
+% \show\reuh
+% \expandafter\show\csname\string\reuh\endcsname
+\tracingmacros0
+%\stop
+
+% \newcommandx*\tif[1][1]{\showtokens{(#1)[\if]}}
+% \tif[\if] \tif
+% \stop
+%  
+% \newcommandx*\vect[3][1=0, 3=n]{(#2_{#1},\ldots,#2_{#3})}
+
+%\tracingmacros1
+% \newcommandx*\machin[2][2]{#1-#2;}
+% \tracingmacros0
+% \newcommandx\truc[6][2=t2, 3=AB, 4={4,5}]{#1--#2--#3--#4.}
+% \newcommandx\foo[2][1, 2=bar]{#1, #2.}
+% \renewcommandx\foo[3][1, 2=bar, ]{#1, #2, #3.}
+% \providecommandx\foo[2][1, 2=bar]{#1, #2.}
+% \tracingmacros1
+% \CheckCommandx\foo[3][2=bar, 1=]{#1, #2, #3.}
+\tracingmacros0
+
+%\newcommand\choz[4][1]{(#1)}
+% \tracingmacros1
+%\CheckCommand\choz[4][{1}]{(#2)}
+% \tracingmacros0
+
+%% } vrac et vieux
+
+%%% { section fixe
+\begin{document}
+\tableofcontents
+Bla.
+\section{truc}
+Foubarre.\par\bigskip
+%%% } section fixe
+
+%% { vrac et vieux
+
+% \reuh{A}BC
+% \reuh{A}[B]C
+% {\let\protect\string --
+% \reuh{A}BC
+% \reuh{A}[B]C
+% }
+
+% \truc{\machin{1}[2]}bcdef
+
+% \show\choz
+% \expandafter\show\csname \string\choz\endcsname
+%  
+% \newcommand\chose[3][2=truc]{(#3)}
+%  
+% \show\chose
+% \expandafter\show\csname \string\chose\endcsname
+
+% \section{bla}
+% 
+% foo
+% 
+% \section{\machin{A}BC -- \machin{A}[B]C} 
+
+% \[
+% \tracingmacros1
+%   \vect{x} \quad
+% \tracingmacros0
+%   \vect[1]{x}[m] \quad
+%   \vect[1]{x} \quad
+%   \vect{x}[{[m]}]
+% \tracingmacros0
+% \]
+
+%% } vrac et vieux
+
+%%% { section fixe
+\end{document}
+%%% } section fixe
