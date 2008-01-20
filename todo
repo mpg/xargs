@@ -1,49 +1,68 @@
                             Trucs à faire pour xargs
                             ------------------------
 
-Penser à décommenter le test dans la doc. De façon générale, bien relire la doc
-et surtout celle du code en ajoutant les \begin{macro} kivonbien. (Tenir compte
-des trucs gribouillés sur papier v1.0 pour commencer.) (Créer, sous une forme ou
-une autre, des sous-section et les munir de liens cliquables (cf minitoc).)
-    (packaging : rajouter le message de fin de compil)
+% Pour la prochaine version
+% -------------------------
 
---> Suite de test :
-    - test de chaque commande, cas de base ; (reste \CCx à faire)
-    - gestion des arguments : indep de la forme (courte) et de l'ordre ;
-    - préfixe pour chaque commande + \Check-compatibilité avec LaTeX ;
-    - présence de \ifs (def, val par défaut, val d'arguments (opt ou pas)) ;
-    - espaces parasites pour chaque commande dans un max de situations ;
-    - présence de \par partout (avec ou sans ted) ;
-    - robustesse des commandes définies ;
-    - messages d'erreur ;
-    - c'est tout pour cette fois...
+[ ] Penser à décommenter le test dans la doc. De façon générale, bien relire la
+    doc et surtout celle du code en ajoutant les \begin{macro} kivonbien. (Tenir
+    compte des trucs gribouillés sur papier v1.0 pour commencer.) (Créer, sous
+    une forme ou une autre, des sous-section et les munir de liens cliquables
+    (cf minitoc).) (packaging : rajouter le message de fin de compil)
 
---> [fait, mais] Ajouter une option pour le préfixe (\long, etc)
-    - Regarder individuellement chaque variante : choix du comportement adéquat,
-      test de ce comportement. (En part, env et \DRCx.) (Tenir compte de la
-      compatibilité LaTeX.)
-    - Regarder pour \CheckCommandx. (Faire gaffe aux \if par la même occaz.)
+[ ] Suite de test :
+    [ ] test de chaque commande, cas de base ; (reste \CCx à faire)
+    [ ] gestion des arguments : indep de la forme (courte) et de l'ordre ;
+    [ ] préfixe pour chaque commande + \Check-compatibilité avec LaTeX ;
+    [ ] présence de \ifs (def, val par défaut, val d'arguments (opt ou pas)) ;
+    [ ] espaces parasites pour chaque commande dans un max de situations ;
+    [ ] présence de \par partout (avec ou sans ted) ;
+    [ ] robustesse des commandes définies ;
+    [ ] messages d'erreur ;
+    [ ] c'est tout pour cette fois...
 
-/!\ Rendre tout robuste à la présence de \if !  
+[ ] Revoir les conditions d'explosion de \newcommand avec des # (et pourquoi pas
+    des \if) et s'assurer que les miennes soient au moins aussi restricitves.
+
+[ ] Mettre des \@ifdefinable autour des \define@key ? (Revoir les \@ifdefinable
+    des macros internes genre \xargs@prefix, \xargs@default@flag, etc. Remarquer
+    aussi que pas mal des trucs arrivent dans un groupe...) Point à joindre avec
+    la vérificatio ndes usages de \xargs@temp. (Priorité basse.)
+
+[x] Mettre tout le code de parsing dans un groupe, par propreté.
+
+[ ] [fait, mais] Ajouter une option pour le préfixe (\long, etc)
+    [ ] Regarder individuellement chaque variante : choix du comportement
+    adéquat, test de ce comportement. (En part, env et \DRCx.) (Tenir compte de
+    la compatibilité LaTeX.)
+    [ ] Regarder pour \CheckCommandx.
+
+[ ] /!\ Rendre tout robuste à la présence de \if !  
     État actuel : ok (sous réserves) pour les \if dans le texte de def ou dans
     les valeurs d'arguments, mais PB si \if dans une valeur par défaut.
     ->  Là aussi, relire le code attentivement (en + de tester).
+    ->  Voir aussi ce qu'il en est pour LaTeX.
     
-Voir le truc à la \newlyxcommand...
+[x] Voir le truc à la \newlyxcommand... (Envoyé, en attente de retour des
+    tests.)
 
-Ajouter l'option ted.
+[ ] Ajouter l'option ted.
 
-Ajouter une option pour choisir le comportement du dernier test quant aux
-espaces.
+[ ] Ajouter une option pour choisir le comportement du dernier test quant aux
+    espaces.
 
-Vérifier les usages de \xargs@temp (portée, tout ça) (pas grave au fond)...
+[ ] Vérifier les usages de \xargs@temp (portée, tout ça) (pas grave au fond)...
     ->  Relire le code.
 
-Relire les usages de \@onlypreamble (fautes de frappe).
+[ ] Relire les usages de \@onlypreamble (fautes de frappe).
+
+
+% Plus long terme, ou à repenser
+% ------------------------------
 
 Créer un \CheckEnvironmentx ?
 
 Lire optparams bien, un peu xparse, et répondre à Morten...
 
-Plus long terme (?) : réfléchir aux étoiles...
+Réfléchir aux étoiles...
 

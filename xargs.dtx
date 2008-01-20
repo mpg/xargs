@@ -29,7 +29,7 @@
 %<*package>
 % \fi
 % \ProvidesFile{xargs.dtx}
-  [2007/12/12 1.0+ \space extended optional arguments facilities \space (mpg)]
+  [2008/01/20 1.0+ \space extended optional arguments facilities \space (mpg)]
 % \iffalse
 %</package>
 % \fi
@@ -531,6 +531,7 @@ This is a generated file. See xargs.dtx for license information.
 % grabbing. 
 %    \begin{macrocode}
 \newcommand*\xargs@read[2]{%
+  \begingroup
   \xargs@toksa{#1}%
   \xargs@toksb{#2}%
   \xargs@continue}
@@ -541,7 +542,7 @@ This is a generated file. See xargs.dtx for license information.
 % Each iteration of the loop consist of two steps: pick the next action (and
 % remove it from the list), and execute it. When there is no more action in
 % the list, it means the arguments grabbing stage is over, and it's time to
-% execute the internal macro by expanding then contents of \cs{xargs@toksa}.
+% execute the internal macro by expanding the contents of \cs{xargs@toksa}.
 %    \begin{macrocode}
 \newcommand\xargs@continue{%
   \expandafter\xargs@pick@next\the\xargs@toksb,\@nil
@@ -553,14 +554,18 @@ This is a generated file. See xargs.dtx for license information.
     \def\xargs@temp{#1}%
     \xargs@toksb{#2}%
     \ifx\xargs@temp\empty
-      \def\xargs@temp{\the\xargs@toksa}%
+      \def\xargs@temp{\expandafter\endgroup\the\xargs@toksa}%
     \fi}}
+%    \end{macrocode}
+%    \begin{macrocode}
+\newcommand*\xargs@set@defflag[1]{%
+  \def\xargs@default@flag{#1}}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
-% \begin{macro}{\xargz@put@arg}
-% \begin{macro}{\xargz@test@opt}
-% \begin{macro}{\xargz@put@opt}
+% \begin{macro}{\xargs@put@arg}
+% \begin{macro}{\xargs@test@opt}
+% \begin{macro}{\xargs@put@opt}
 % Now have a look at the argument grabbing macros. The first one,
 % \cs{xargs@put@arg}, just reads an undelimited argument in the input stack
 % and add it to the arguments list. \cs{xargs@testopt} checks if the next
@@ -575,14 +580,26 @@ This is a generated file. See xargs.dtx for license information.
 %    \begin{macrocode}
 \newcommand*\xargs@test@opt[1]{%
   \xargs@ifnextchar[%]
-    {\xargs@put@opt}%
-    {\xargs@put@opt[{#1}]}}
+    {\xargs@grab@opt{#1}}%
+    {\xargs@put@opt{#1}}}
 %    \end{macrocode}
 %    \begin{macrocode}
-\@ifdefinable\xargs@put@opt{%
-  \long\def\xargs@put@opt[#1]{%
+\newcommand\xargs@put@opt[1]{%
     \xargs@toksa\expandafter{\the\xargs@toksa[{#1}]}%
-  \xargs@continue}}
+  \xargs@continue}
+%    \end{macrocode}
+%    \begin{macrocode}
+\@ifdefinable\xargs@grab@opt{%
+  \long\def\xargs@grab@opt#1[#2]{%
+    \def\xargs@temp{#2}%
+    \ifx\xargs@temp\xargs@default@flag 
+      \expandafter\@firstoftwo
+    \else
+      \expandafter\@secondoftwo
+    \fi{%
+      \xargs@put@opt{#1}%
+      }{%
+      \xargs@put@opt{#2}}}}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -639,7 +656,7 @@ This is a generated file. See xargs.dtx for license information.
 % processing will happen inside a group, and the definition outside.
 %    \begin{macrocode}
 \@ifdefinable\xargs@key@prefix{%
-  \define@key[xargs]{key}{addprefix}{%
+  \define@key[xargs]{key}{addprefix}[]{%
     \global\expandafter\def\expandafter\xargs@prefix\expandafter{%
       \xargs@prefix#1}%
     \xargs@makeshort#1\long\@nil}}
@@ -666,6 +683,15 @@ This is a generated file. See xargs.dtx for license information.
   \global\let\xargs@shortpref\@empty
   \@ifstar{\gdef\xargs@prefix{}#1}{\gdef\xargs@prefix{\long}#1}}
 %    \end{macrocode}
+%
+% Now, another particular key is the |usedefault| key. When used, it just sets
+% \cs{xargs@default@flag}. Later on, this will be used to possibly introduce a
+% \cs{xargs@set@default} action at the beginning of the actions list. 
+%    \begin{macrocode}
+\define@key[xargs]{key}{usedefault}[]{%
+  \def\xargs@default@flag{#1}}
+%    \end{macrocode}
+% 
 % 
 % Let's continue with the more important keys. The idea is to collect through
 % \pf{xkeyval} at most 9 actions numbered 1 to \cs{xargs@max} (the total
@@ -834,6 +860,12 @@ This is a generated file. See xargs.dtx for license information.
     \begingroup
     \xargs@setkeys{#2}%
     \xargs@toksa{}\xargs@toksb{}%
+%    \end{macrocode}
+% Now the |usedefault| part.
+%    \begin{macrocode}
+    \@ifundefined{xargs@default@flag}{}{%
+      \xargs@toksa\expandafter{%
+        \expandafter\xargs@set@defflag\expandafter{\xargs@default@flag}}}
 %    \end{macrocode}
 % Then the main loop actually builds up the two lists in the correct order.
 %    \begin{macrocode}
