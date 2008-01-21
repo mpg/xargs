@@ -72,6 +72,19 @@
 \endgroup
 %% } test des outils de test
 
+%% { le point sur \newcommand, les # et les \if
+\begingroup
+% \newcommand*\hasht[1][ab#cd]{def} % Explose.
+%\newcommand*\hasht[1][a]{\showtokens{(#1)}}
+%\hasht[a#b]
+%\newcommand*\tif[1][\ifcat]{\showtokens{\ifx#1\ifnum}}
+%\showcmd\tif
+%\tif[\if]
+\endgroup
+% morale de l'histoire : les \if marchent partout,
+% les # marchent dans un arg optionel mais pas dans une valeur par défaut
+%% } le point sur \newcommand, les # et les \if
+
 %% { macros de definition (ie tt sf \CC) cas simples
 \begingroup
 % newcommandx, trois cas de base (cf choose@def) + @ifdefinable
@@ -173,6 +186,24 @@ Bla.
 \section{truc}
 Foubarre.\par\bigskip
 %%% } section fixe
+
+%% { test pour usedefault
+\begingroup
+%\newcommandx*\foo[3][1=a, 2=b, 3=c]{(#1,#2,#3)}
+%\foo[][B] 123 should be (,B,c)123 \par
+%\foo[][][C] 123 should be (,,C)123 \par
+%\medskip
+%\newcommandx*\fooo[3][usedefault, 1=a, 2=b, 3=c]{(#1,#2,#3)}
+%\fooo[][B] 123 should be (a,B,c)123 \par
+%\fooo[][][C] 123 should be (a,b,C)123 \par
+%\medskip
+%\newcommandx*\foooo[3][usedefault=default, 1=a, 2=b, 3=c]{(#1,#2,#3)}
+%\foooo[][B] 123 should be (,B,c)123 \par
+%\foooo[][][C] 123 should be (,,C)123 \par
+%\foooo[default][B] 123 should be (a,B,c)123 \par
+%\foooo[default][][C] 123 should be (a,,C)123 \par
+\endgroup
+%% } test pour usedefault
 
 %% { vrac et vieux
 
