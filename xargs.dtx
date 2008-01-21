@@ -79,9 +79,6 @@ This is a generated file. See xargs.dtx for license information.
 \usepackage{lmodern}
 \usepackage{fixltx2e}
 \usepackage[babel=true, expansion=false]{microtype}
-\usepackage[bookmarks=false, colorlinks=true,
-  linkcolor=black, urlcolor=black]{hyperref}
-\usepackage[nohints]{minitoc}
 \usepackage{xargs}
 \expandafter\newif\csname iffrenchdoc\endcsname % cachez ce if que je ne...
 %<pilote>\frenchdoctrue
@@ -92,9 +89,11 @@ This is a generated file. See xargs.dtx for license information.
 %<*pilote>
 \usepackage[lmargin=4.5cm, rmargin=3cm]{geometry}
 \OnlyDescription
-\usepackage[english, french]{babel}
+\usepackage[english, frenchb]{babel}
 \FrenchFootnotes
 \newcommand*\eng[1]{\emph{\foreignlanguage{english}{#1}}}
+\usepackage[bookmarks=false, colorlinks=true,
+  linkcolor=black, urlcolor=black]{hyperref}
 %</pilote>
 %<*gobble>
 \else
@@ -102,18 +101,18 @@ This is a generated file. See xargs.dtx for license information.
 %<*driver>
 \AlsoImplementation
 \usepackage[english]{babel}
+\usepackage[bookmarks=false, colorlinks=true,
+  linkcolor=black, urlcolor=black]{hyperref}
+\usepackage[nohints, undotted, english]{minitoc}
 %</driver>
 %<*gobble>
 \fi
 %</gobble>
 %<*driver|pilote>
 \newcommand\pf{\textsf}
-\setcounter{tocdepth}{1}
 \settowidth\MacroIndent{\rmfamily\scriptsize 000\ }
 \setlength\MacroTopsep{0pt}
 \begin{document}
-  \dosecttoc
-  \mtcsetrules{*}{off}
   \DocInput{xargs.dtx}
 \end{document}
 %</driver|pilote>
@@ -128,7 +127,11 @@ This is a generated file. See xargs.dtx for license information.
 % \date{\fileversion\ (\filedate)}
 %
 % \maketitle
-% \iffrenchdoc\else \tableofcontents \fi
+% \iffrenchdoc\else 
+%   \dosecttoc
+%   \mtcsetrules{*}{off}
+%   {\setcounter{tocdepth}{1}\tableofcontents}
+% \fi
 %
 %         \section{Introduction}
 %
@@ -447,7 +450,7 @@ This is a generated file. See xargs.dtx for license information.
 % \StopEventually{}
 %
 %         \section{Implementation}
-% 
+%
 % \begingroup \def\leaders#1#2{}
 % \secttoc[n]
 % \endgroup
@@ -521,7 +524,7 @@ This is a generated file. See xargs.dtx for license information.
 % \end{macro}
 % \end{macro}
 % \begin{macro}{\@protected@testop@xargs}
-% This first macros closely resembles kernel's \cs{@protected@testopt}
+% This first macro closely resembles kernel's \cs{@protected@testopt}
 % (similarity in their names is intentional, see \cs{CheckCommandx}). It just
 % checks the protection context and call the real argument grabbing macro.
 %    \begin{macrocode}

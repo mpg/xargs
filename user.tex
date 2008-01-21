@@ -85,6 +85,13 @@
 % les # marchent dans un arg optionel mais pas dans une valeur par défaut
 %% } le point sur \newcommand, les # et les \if
 
+%% { comportement avec des \ifs
+\begingroup
+\tracingmacros1
+\newcommandx\txif[1][1=\ifcat]{\showtokens{(#1)}}
+\endgroup
+%% } comportement avec des \ifs
+
 %% { macros de definition (ie tt sf \CC) cas simples
 \begingroup
 % newcommandx, trois cas de base (cf choose@def) + @ifdefinable

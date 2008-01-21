@@ -42,19 +42,15 @@
     la compatibilité LaTeX.)
     [ ] Regarder pour \CheckCommandx.
 
-[ ] /!\ Rendre tout robuste à la présence de \if !  
+[x] (Abandon) Rendre tout robuste à la présence de \if !  
     État actuel : ok (sous réserves) pour les \if dans le texte de def ou dans
     les valeurs d'arguments, mais PB si \if dans une valeur par défaut.
-    ->  Là aussi, relire le code attentivement (en + de tester).
-    ->  Voir aussi ce qu'il en est pour LaTeX.
+    -> Résultat : le problème avec les \if vient de xkeyval. À moins d'un
+    pré-traitement intensif par ted, il n'y a rien à faire. On abandonne sur ce
+    front.
     
 [x] Voir le truc à la \newlyxcommand... (Envoyé, en attente de retour des
     tests.)
-
-[ ] Ajouter l'option ted.
-
-[ ] Ajouter une option pour choisir le comportement du dernier test quant aux
-    espaces.
 
 [ ] Vérifier les usages de \xargs@temp (portée, tout ça) (pas grave au fond)...
     ->  Relire le code.
@@ -64,6 +60,12 @@
 
 % Plus long terme, ou à repenser
 % ------------------------------
+
+[ ] Ajouter l'option ted.
+
+[ ] Ajouter une option pour choisir le comportement du dernier test quant aux
+    espaces. Difficile en fait : nécessite de calculer l'emplacement du dernier
+    argument obligatoire. Cela en vaut-il vraiment la peine ?
 
 Créer un \CheckEnvironmentx ?
 
