@@ -81,7 +81,7 @@ This is a generated file. See xargs.dtx for license information.
 \usepackage[babel=true, expansion=false]{microtype}
 \usepackage[bookmarks=false, colorlinks=true,
   linkcolor=black, urlcolor=black]{hyperref}
-\usepackage[undotted]{minitoc}
+\usepackage[nohints]{minitoc}
 \usepackage{xargs}
 \expandafter\newif\csname iffrenchdoc\endcsname % cachez ce if que je ne...
 %<pilote>\frenchdoctrue
@@ -113,7 +113,6 @@ This is a generated file. See xargs.dtx for license information.
 \setlength\MacroTopsep{0pt}
 \begin{document}
   \dosecttoc
-  \undottedmtctrue
   \mtcsetrules{*}{off}
   \DocInput{xargs.dtx}
 \end{document}
@@ -448,12 +447,10 @@ This is a generated file. See xargs.dtx for license information.
 % \StopEventually{}
 %
 %         \section{Implementation}
-%
-% ^^A \tracingmacros1
-% \begingroup \def\leaders#1#2{}%
+% 
+% \begingroup \def\leaders#1#2{}
 % \secttoc[n]
 % \endgroup
-% \tracingmacros0
 %
 % If you are familiar with the way \LaTeXe{} manages macros with an optional
 % argument, then you will probably not be surprised by the \pf{xargs} way.
