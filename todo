@@ -8,7 +8,7 @@
     doc et surtout celle du code en ajoutant les \begin{macro} kivonbien. (Tenir
     compte des trucs gribouillés sur papier v1.0 pour commencer.) (Créer, sous
     une forme ou une autre, des sous-section et les munir de liens cliquables
-    (cf minitoc).) (packaging : rajouter le message de fin de compil)
+    (cf minitoc).)
 
 [ ] Suite de test :
     [ ] test de chaque commande, cas de base ; (reste \CCx à faire)

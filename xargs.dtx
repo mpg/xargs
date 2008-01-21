@@ -77,10 +77,11 @@ This is a generated file. See xargs.dtx for license information.
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
+\usepackage{fixltx2e}
 \usepackage[babel=true, expansion=false]{microtype}
 \usepackage[bookmarks=false, colorlinks=true,
   linkcolor=black, urlcolor=black]{hyperref}
-\usepackage{fixltx2e}
+\usepackage[undotted]{minitoc}
 \usepackage{xargs}
 \expandafter\newif\csname iffrenchdoc\endcsname % cachez ce if que je ne...
 %<pilote>\frenchdoctrue
@@ -108,10 +109,12 @@ This is a generated file. See xargs.dtx for license information.
 %<*driver|pilote>
 \newcommand\pf{\textsf}
 \setcounter{tocdepth}{1}
-\renewcommand\thesubsubsection{\alph{subsubsection}}
 \settowidth\MacroIndent{\rmfamily\scriptsize 000\ }
 \setlength\MacroTopsep{0pt}
 \begin{document}
+  \dosecttoc
+  \undottedmtctrue
+  \mtcsetrules{*}{off}
   \DocInput{xargs.dtx}
 \end{document}
 %</driver|pilote>
@@ -446,6 +449,12 @@ This is a generated file. See xargs.dtx for license information.
 %
 %         \section{Implementation}
 %
+% ^^A \tracingmacros1
+% \begingroup \def\leaders#1#2{}%
+% \secttoc[n]
+% \endgroup
+% \tracingmacros0
+%
 % If you are familiar with the way \LaTeXe{} manages macros with an optional
 % argument, then you will probably not be surprised by the \pf{xargs} way.
 % Indeed, with \LaTeXe{}, a command \cs{foo} defined with, say
@@ -478,6 +487,8 @@ This is a generated file. See xargs.dtx for license information.
 % later case, the presence of the optional argument is checked in a way
 % slightly differing from \LaTeXe's \cs{@ifnextchar}, then the relevant value
 % added to the arguments list.
+%
+% \subsection{Parser}
 %
 % All this argument grabing job is done with a loop that read and executes
 % each action from the originating list, and concurrently builds an argument
@@ -645,7 +656,8 @@ This is a generated file. See xargs.dtx for license information.
 % \end{macro}
 % \end{macro}
 % 
-% \medskip
+% \subsection{Keys}
+%
 % Okay, we are done with the execution related macros. Now let's start with
 % stuff for the definition of macros. In this part we use \pf{xkeyval}.
 % Let's start with the particular keys for options addprefix and default. Like
@@ -823,6 +835,9 @@ This is a generated file. See xargs.dtx for license information.
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
+%
+% \subsection{Definition}
+%
 % \begin{macro}{\xargs@add@args}
 % Now our goal is to build two lists from our up to nine actions macros. The
 % first is the coma-separated list of actions allready discussed. The second
@@ -934,7 +949,8 @@ This is a generated file. See xargs.dtx for license information.
     \xargs@prefix\def#2#4{#5}}}
 %    \end{macrocode}
 %
-% \medskip
+% \subsection{User macros}
+%
 % \begin{macro}{\newcommandx}
 % \begin{macro}{\xargs@newc}
 % All the internal macros are ready. It's time to define the user commands,
