@@ -77,7 +77,7 @@ This is a generated file. See xargs.dtx for license information.
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage{fixltx2e}
+\usepackage{fixltx2e, mparhack}
 \usepackage[babel=true, expansion=false]{microtype}
 \usepackage{xargs}
 \expandafter\newif\csname iffrenchdoc\endcsname % cachez ce if que je ne...
@@ -101,7 +101,7 @@ This is a generated file. See xargs.dtx for license information.
 %<*driver>
 \AlsoImplementation
 \usepackage[english]{babel}
-\usepackage[bookmarks=false, colorlinks=true,
+\usepackage[bookmarks=true, colorlinks=true,
   linkcolor=black, urlcolor=black]{hyperref}
 \usepackage[nohints, undotted, english]{minitoc}
 %</driver>
@@ -131,6 +131,7 @@ This is a generated file. See xargs.dtx for license information.
 %   \dosecttoc
 %   \mtcsetrules{*}{off}
 %   {\setcounter{tocdepth}{1}\tableofcontents}
+%   {\setcounter{tocdepth}{2}\faketableofcontents}
 % \fi
 %
 %         \section{Introduction}
@@ -354,11 +355,11 @@ This is a generated file. See xargs.dtx for license information.
 % ^^A \end{center}
 %
 % You surely understood \cs{vect} is now a macro with 3 arguments, the first
-% and third being optional. They both have their own default value (resp.\@
+% and third being optional. They both have their own default value (resp.
 % |1| and |n|). You maybe noticed how \cs{newcommandx}'s syntax closely
-% ressembles \cs{newcommand}'s syntax: The only difference is, instead of the
-% default value of the only optional argument, you have to specifiy the number
-% of the optional arguments, followed by a = and their default value.
+% ressembles \cs{newcommand}'s syntax: the only difference is that, instead of
+% the default value of the only optional argument, you have to specifiy the
+% number of the optional arguments, followed by a = and their default value.
 %
 % Now let's have a closer look at \cs{newcommandx}'s syntax, shared by all
 % other \pf{xargs} commands. (While dealing with details, here is the complete

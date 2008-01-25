@@ -21,18 +21,17 @@
     [ ] messages d'erreur ;
     [ ] c'est tout pour cette fois...
 
+[ ] Relire les usages de \@onlypreamble (fautes de frappe).
+
 [x] Revoir les conditions d'explosion de \newcommand avec des # (et pourquoi pas
     des \if) et s'assurer que les miennes soient au moins aussi restricitves.
     - Résultat : tout marche bien avec les \if, les # dans un argument optionel
     sont OK, mais pas dans une valeur par défaut. 
-    - pour moi, implique d'utiliser ted pour se protéger des # en cas de
+    - Pour moi, implique d'utiliser ted pour se protéger des # en cas de
       usedefault, ou admettre que # et usedefault sont incompatibles. (Ou alors
     mettre useted comme option.)
-
-[ ] Mettre des \@ifdefinable autour des \define@key ? (Revoir les \@ifdefinable
-    des macros internes genre \xargs@prefix, \xargs@default@flag, etc. Remarquer
-    aussi que pas mal des trucs arrivent dans un groupe...) Point à joindre avec
-    la vérification des usages de \xargs@temp. (Priorité basse.)
+    -> Pour le moment, on abandonne les # et les \ifs qui exigeraient un
+    prétraitement considérable par ted pour une utilité douteuse.
 
 [x] Mettre tout le code de parsing dans un groupe, par propreté.
 
@@ -55,11 +54,13 @@
 [ ] Vérifier les usages de \xargs@temp (portée, tout ça) (pas grave au fond)...
     ->  Relire le code.
 
-[ ] Relire les usages de \@onlypreamble (fautes de frappe).
+[ ] Mettre des \@ifdefinable autour des \define@key ? (Revoir les \@ifdefinable
+    des macros internes genre \xargs@prefix, \xargs@default@flag, etc. Remarquer
+    aussi que pas mal des trucs arrivent dans un groupe...) Point à joindre avec
+    la vérification des usages de \xargs@temp. (Priorité basse.)
 
-
-% Plus long terme, ou à repenser
-% ------------------------------
+% Plus tard, ou à repenser
+% ------------------------
 
 [ ] Ajouter l'option ted.
 
