@@ -1,14 +1,15 @@
 % fichier de tests pour xargs (commentaires en utf8 : àéïôù)
 
-%%% { section fixe
+%{{{ section fixe : « préambule »
+%{{{ classe et extensions
 \documentclass{article}
 \usepackage[ascii]{inputenc}
-\usepackage[T1]{fontenc}
+\usepackage[t1]{fontenc}
 
 \usepackage{xargs}
+%}}}
 
-
-%% { définitions d'outils de test : \showcmd et \showenv
+%{{{ définitions d'outils de test : \showcmd et \showenv
 \makeatletter
 
 \newcommand\showcmd[1]{%
@@ -43,14 +44,12 @@
   \expandafter\show\csname end#1\endcsname}
 
 \makeatother
-%% } définitions
+%}}} définitions
+%}}} section fixe
 
-%%% } section fixe
-
-%% { test des outils de test sur les macros LaTeX 
-%%   (et valeurs de référence pour le préfixe)
-\begingroup
-% test de \showcmd sur des cs-mots
+%%{{{ test des outils de test sur les macros LaTeX 
+%%    (et valeurs de référence pour le préfixe)
+%% test de \showcmd sur des cs-mots
 %\newcommand\sct{bla}
 %\showcmd\sct
 %\DeclareRobustCommand\sctt{bla}
@@ -59,41 +58,38 @@
 %\showcmd\scttt
 %\DeclareRobustCommand\sctttt[1][bla]{blabla}
 %\showcmd\sctttt
-% test sur des cs-symbole pour \DRC
+%% test sur des cs-symbole pour \DRC
 %\DeclareRobustCommand\+{bla}
 %\showcmd\+
 %\DeclareRobustCommand\*[1][bla]{blabla}
 %\showcmd\*
-% test de \showenv
+%% test de \showenv
 %\newenvironment{set}{B-bla}{E-bla}
 %\showenv{set}
 %\newenvironment{set*}[1][ouf]{B-bla}{E-bla}
 %\showenv{set*}
-\endgroup
-%% } test des outils de test
+%\stop
+%%}}} test des outils de test
 
-%% { le point sur \newcommand, les # et les \if
-\begingroup
+%%{{{ le point sur \newcommand, les # et les \if
 % \newcommand*\hasht[1][ab#cd]{def} % Explose.
 %\newcommand*\hasht[1][a]{\showtokens{(#1)}}
 %\hasht[a#b]
 %\newcommand*\tif[1][\ifcat]{\showtokens{\ifx#1\ifnum}}
 %\showcmd\tif
 %\tif[\if]
-\endgroup
+%\stop
 % morale de l'histoire : les \if marchent partout,
 % les # marchent dans un arg optionel mais pas dans une valeur par défaut
-%% } le point sur \newcommand, les # et les \if
+%%}}} le point sur \newcommand, les # et les \if
 
-%% { comportement avec des \ifs
-\begingroup
-\tracingmacros1
-\newcommandx\txif[1][1=\ifcat]{\showtokens{(#1)}}
-\endgroup
-%% } comportement avec des \ifs
+%%{{{ comportement avec des \ifs
+%\tracingmacros1
+%\newcommandx\txif[1][1=\ifcat]{\showtokens{(#1)}}
+%\stop
+%%}}} comportement avec des \ifs
 
-%% { macros de definition (ie tt sf \CC) cas simples
-\begingroup
+%%{{{ macros de definition (ie tt sf \CC) cas simples
 % newcommandx, trois cas de base (cf choose@def) + @ifdefinable
 %\newcommandx\ncst{blat}
 %\showcmd\ncst
@@ -129,73 +125,39 @@
 %\showenv{net}
 %\renewenvironmentx{net*}[2][2=non]{B-pas}{E-bien} % -> 1 erreur
 %\showenv{net*} % undefined
-\endgroup
-%% } macros de definition (ie tt sf \CC) cas simples
-
-%% { vrac et vieux
-
-%\begingroup
-%\newcommandx\testg[4][usedefault, 1, 3=trois, 4=quatre]{%
-%  \showtokens{(#1,#2,#3,#4)}}
-%\showcmd\testg
-%\testg{2}\relax
-%\testg[1]{2}[][4]\relax
-%\testg[1]{2}[3]\relax
-%\endgroup
 %\stop
+%%}}} macros de definition (ie tt sf \CC) cas simples
 
+%{{{ tests pour addprefix
+%\stop
+%}}} tests pour addprefix
+
+%{{{ chantier
 %\tracingmacros1
 \begingroup
 % \newcommandx*\reuh[2][2, addprefix=\global\long\protected\long]{(#1|#2)}
 % \newenvironmentx{abc}[2][2, addprefix=\global\protected]{abc}{def}
 %\renewcommandx\reuh[1][addprefix=\global]{X#1X}
 \endgroup
-%\show\abc
-%\showcs\string\abc\endcsname
-%\show\endabc
-%\show\reuh
-%\showcs\string\reuh\endcsname
+%\showenv{abc}
+%\showcmd\reuh
 % \let\reuh\relax
 % \newcommand\reuh[2][]{abc}
-% \show\reuh
-% \expandafter\show\csname\string\reuh\endcsname
+% \showcmd\reuh
 \tracingmacros0
 %\stop
+%}}} chantier
 
-% \newcommandx*\tif[1][1]{\showtokens{(#1)[\if]}}
-% \tif[\if] \tif
-% \stop
-%  
-% \newcommandx*\vect[3][1=0, 3=n]{(#2_{#1},\ldots,#2_{#3})}
-
-%\tracingmacros1
-% \newcommandx*\machin[2][2]{#1-#2;}
-% \tracingmacros0
-% \newcommandx\truc[6][2=t2, 3=AB, 4={4,5}]{#1--#2--#3--#4.}
-% \newcommandx\foo[2][1, 2=bar]{#1, #2.}
-% \renewcommandx\foo[3][1, 2=bar, ]{#1, #2, #3.}
-% \providecommandx\foo[2][1, 2=bar]{#1, #2.}
-% \tracingmacros1
-% \CheckCommandx\foo[3][2=bar, 1=]{#1, #2, #3.}
-\tracingmacros0
-
-%\newcommand\choz[4][1]{(#1)}
-% \tracingmacros1
-%\CheckCommand\choz[4][{1}]{(#2)}
-% \tracingmacros0
-
-%% } vrac et vieux
-
-%%% { section fixe
+%{{{ section fixe : begin-doc
 \begin{document}
 \tableofcontents
 Bla.
 \section{truc}
 Foubarre.\par\bigskip
-%%% } section fixe
+%}}} section fixe
 
-%% { test pour usedefault
-\begingroup
+%%{{{ test pour usedefault
+%\begingroup
 %\newcommandx*\foo[3][1=a, 2=b, 3=c]{(#1,#2,#3)}
 %\foo[][B] 123 should be (,B,c)123 \par
 %\foo[][][C] 123 should be (,,C)123 \par
@@ -209,46 +171,11 @@ Foubarre.\par\bigskip
 %\foooo[][][C] 123 should be (,,C)123 \par
 %\foooo[default][B] 123 should be (a,B,c)123 \par
 %\foooo[default][][C] 123 should be (a,,C)123 \par
-\endgroup
-%% } test pour usedefault
+%\endgroup
+%%}}} test pour usedefault
 
-%% { vrac et vieux
-
-% \reuh{A}BC
-% \reuh{A}[B]C
-% {\let\protect\string --
-% \reuh{A}BC
-% \reuh{A}[B]C
-% }
-
-% \truc{\machin{1}[2]}bcdef
-
-% \show\choz
-% \expandafter\show\csname \string\choz\endcsname
-%  
-% \newcommand\chose[3][2=truc]{(#3)}
-%  
-% \show\chose
-% \expandafter\show\csname \string\chose\endcsname
-
-% \section{bla}
-% 
-% foo
-% 
-% \section{\machin{A}BC -- \machin{A}[B]C} 
-
-% \[
-% \tracingmacros1
-%   \vect{x} \quad
-% \tracingmacros0
-%   \vect[1]{x}[m] \quad
-%   \vect[1]{x} \quad
-%   \vect{x}[{[m]}]
-% \tracingmacros0
-% \]
-
-%% } vrac et vieux
-
-%%% { section fixe
+%{{{ section fixe : end-doc
 \end{document}
-%%% } section fixe
+%}}} section fixe
+
+% vim: set fdm=marker:
