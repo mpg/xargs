@@ -29,8 +29,12 @@ set smartcase
 set suffixes=.aux,.pdf,.dvi,.ps,.bbl,.blg,.ind,.idx,.ilg,.inx,.out,.toc
 set tabstop=2
 set textwidth=80
+<<<<<<< .mine
+set wildmenu
+=======
 set viminfo='20,\"50
 set wildmenu
+>>>>>>> .r19
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
