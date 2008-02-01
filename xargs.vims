@@ -7,6 +7,7 @@ nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetBrowseX(expand("<cWORD>"),0
 map <F12> :mksession! %<.vims 
 let &cpo=s:cpo_save
 unlet s:cpo_save
+set autoindent
 set autowrite
 set background=dark
 set backspace=2
@@ -21,20 +22,19 @@ set hidden
 set history=50
 set hlsearch
 set incsearch
+set nomodeline
 set pastetoggle=<F11>
+set printoptions=paper:a4
 set ruler
+set runtimepath=~/.vim,/var/lib/vim/addons,/usr/share/vim/vimfiles,/usr/share/vim/vim71,/usr/share/vim/vimfiles/after,/var/lib/vim/addons/after,~/.vim/after
 set shiftwidth=2
 set showcmd
 set smartcase
 set suffixes=.aux,.pdf,.dvi,.ps,.bbl,.blg,.ind,.idx,.ilg,.inx,.out,.toc
 set tabstop=2
 set textwidth=80
-<<<<<<< .mine
-set wildmenu
-=======
 set viminfo='20,\"50
 set wildmenu
->>>>>>> .r19
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
@@ -61,12 +61,13 @@ set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
-exe '1resize ' . ((&lines * 27 + 28) / 57)
+exe '1resize ' . ((&lines * 24 + 25) / 51)
 exe 'vert 1resize ' . ((&columns * 80 + 80) / 161)
-exe '2resize ' . ((&lines * 27 + 28) / 57)
+exe '2resize ' . ((&lines * 24 + 25) / 51)
 exe 'vert 2resize ' . ((&columns * 80 + 80) / 161)
 exe 'vert 3resize ' . ((&columns * 80 + 80) / 161)
 argglobal
+setlocal keymap=
 setlocal noarabic
 setlocal noautoindent
 setlocal autoread
@@ -116,7 +117,6 @@ setlocal indentexpr=
 setlocal indentkeys=0{,0},:,0#,!^F,o,O,e
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
-setlocal keymap=
 setlocal keywordprg=
 setlocal nolinebreak
 setlocal nolisp
@@ -161,7 +161,7 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 13) / 27)
+let s:l = 1 - ((0 * winheight(0) + 12) / 24)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -176,6 +176,7 @@ map <buffer> <F6> :! xpdf %<.pdf >/dev/null 2>&1 & 
 map <buffer> <F5> :! pdflatex % 
 let &cpo=s:cpo_save
 unlet s:cpo_save
+setlocal keymap=
 setlocal noarabic
 setlocal autoindent
 setlocal autoread
@@ -209,7 +210,7 @@ setlocal foldexpr=0
 setlocal foldignore=#
 setlocal foldlevel=0
 setlocal foldmarker={{{,}}}
-setlocal foldmethod=manual
+setlocal foldmethod=marker
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=foldtext()
@@ -225,7 +226,6 @@ setlocal indentexpr=GetTeXIndent()
 setlocal indentkeys=0{,0},:,0#,!^F,o,O,e,},=\\item,=\\bibitem,=\\else,=\\fi,=\\or,=\\]
 setlocal noinfercase
 setlocal iskeyword=@,48-57,192-255
-setlocal keymap=
 setlocal keywordprg=
 setlocal nolinebreak
 setlocal nolisp
@@ -269,8 +269,7 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 13) / 27)
+let s:l = 1 - ((0 * winheight(0) + 12) / 24)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -285,6 +284,7 @@ map <buffer> <F6> :! xpdf %<.pdf >/dev/null 2>&1 & 
 map <buffer> <F5> :! pdflatex % 
 let &cpo=s:cpo_save
 unlet s:cpo_save
+setlocal keymap=
 setlocal noarabic
 setlocal autoindent
 setlocal autoread
@@ -334,7 +334,6 @@ setlocal indentexpr=GetTeXIndent()
 setlocal indentkeys=0{,0},:,0#,!^F,o,O,e,},=\\item,=\\bibitem,=\\else,=\\fi,=\\or,=\\]
 setlocal noinfercase
 setlocal iskeyword=@,48-57,192-255
-setlocal keymap=
 setlocal keywordprg=
 setlocal nolinebreak
 setlocal nolisp
@@ -379,7 +378,7 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
+let s:l = 1 - ((0 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -387,9 +386,9 @@ normal! zt
 normal! 0
 wincmd w
 3wincmd w
-exe '1resize ' . ((&lines * 27 + 28) / 57)
+exe '1resize ' . ((&lines * 24 + 25) / 51)
 exe 'vert 1resize ' . ((&columns * 80 + 80) / 161)
-exe '2resize ' . ((&lines * 27 + 28) / 57)
+exe '2resize ' . ((&lines * 24 + 25) / 51)
 exe 'vert 2resize ' . ((&columns * 80 + 80) / 161)
 exe 'vert 3resize ' . ((&columns * 80 + 80) / 161)
 tabnext 1
