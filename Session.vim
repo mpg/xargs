@@ -4,7 +4,6 @@ let s:cpo_save=&cpo
 set cpo&vim
 nmap gx <Plug>NetrwBrowseX
 nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetBrowseX(expand("<cWORD>"),0)
-map <F12> :mksession! %<.vims 
 let &cpo=s:cpo_save
 unlet s:cpo_save
 set autoindent
