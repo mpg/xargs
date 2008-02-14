@@ -62,15 +62,27 @@
 % Plus tard, ou à repenser
 % ------------------------
 
-[ ] Ajouter l'option ted.
+[ ] Ajouter l'option ted. Bof-bof en fait : de toutes façons xkeyval limite,
+    pour les if en plus des par. Peut-être rester simple et juste créer une
+    section limitations connues dans la doc ?
 
 [ ] Ajouter une option pour choisir le comportement du dernier test quant aux
     espaces. Difficile en fait : nécessite de calculer l'emplacement du dernier
     argument obligatoire. Cela en vaut-il vraiment la peine ?
+        En fait, c'est sans doute plus facile de déterminer le dernier
+        emplacement si on construit le parseur en partant de la fin. 
+        Même comme ça, c'est pas clair que ça en vaut la peine, et iul faut
+        peut-être mieux que le traitement soit identique sur tous les espaces.
+            Rajouter une option pour ça dans newcx, plus une globale pour
+            choisir le comportement par défaut.
+
+[ ] Réfléchir aux étoiles...
+    Une bonne idée peut-être : voir dans newcx un clé star=combien, puis des
+    clés precode0 à precodeN, et enfin prendre les définitions en plus comme des
+    arg optionnels. Pb si le mec veut la même défintition dans le cas 0 et 1
+    mais pas 2. À voir quand même.
 
 Créer un \CheckEnvironmentx ?
 
 Lire optparams bien, un peu xparse, et répondre à Morten...
-
-Réfléchir aux étoiles...
 
