@@ -9,30 +9,23 @@ unlet s:cpo_save
 set autoindent
 set autowrite
 set background=dark
-set backspace=2
-set cscopeprg=/usr/bin/cscope
-set cscopetag
-set cscopeverbose
+set backspace=indent,eol,start
 set expandtab
 set fileencodings=utf8,latin1
-set formatoptions=tcqlr
 set helplang=fr
 set hidden
 set history=50
-set hlsearch
 set incsearch
-set nomodeline
-set pastetoggle=<F11>
+set pastetoggle=<F12>
 set printoptions=paper:a4
 set ruler
 set runtimepath=~/.vim,/var/lib/vim/addons,/usr/share/vim/vimfiles,/usr/share/vim/vim71,/usr/share/vim/vimfiles/after,/var/lib/vim/addons/after,~/.vim/after
-set shiftwidth=2
+set shiftwidth=4
 set showcmd
 set smartcase
 set suffixes=.aux,.pdf,.dvi,.ps,.bbl,.blg,.ind,.idx,.ilg,.inx,.out,.toc
-set tabstop=2
-set textwidth=80
-set viminfo='20,\"50
+set tabstop=4
+set textwidth=72
 set wildmenu
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
@@ -42,10 +35,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +1 xargs.dtx
-badd +1 user.tex
-badd +1 todo
-args xargs.dtx
+badd +2 xargs.dtx
+badd +1 test.tex
+badd +0 todo
+silent! argdel *
 edit todo
 set splitbelow splitright
 wincmd _ | wincmd |
@@ -68,8 +61,7 @@ exe 'vert 3resize ' . ((&columns * 80 + 80) / 161)
 argglobal
 setlocal keymap=
 setlocal noarabic
-setlocal noautoindent
-setlocal autoread
+setlocal autoindent
 setlocal nobinary
 setlocal bufhidden=
 setlocal buflisted
@@ -100,12 +92,13 @@ setlocal foldexpr=0
 setlocal foldignore=#
 setlocal foldlevel=0
 setlocal foldmarker={{{,}}}
-setlocal foldmethod=manual
+set foldmethod=syntax
+setlocal foldmethod=syntax
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=foldtext()
 setlocal formatexpr=
-setlocal formatoptions=tcql
+setlocal formatoptions=tcq
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal grepprg=
 setlocal iminsert=0
@@ -136,7 +129,7 @@ setlocal noreadonly
 setlocal norightleft
 setlocal rightleftcmd=search
 setlocal noscrollbind
-setlocal shiftwidth=2
+setlocal shiftwidth=4
 setlocal noshortname
 setlocal nosmartindent
 setlocal softtabstop=0
@@ -151,7 +144,7 @@ setlocal synmaxcol=3000
 if &syntax != ''
 setlocal syntax=
 endif
-setlocal tabstop=2
+setlocal tabstop=4
 setlocal tags=
 setlocal textwidth=80
 setlocal thesaurus=
@@ -159,7 +152,6 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-silent! normal! zE
 let s:l = 1 - ((0 * winheight(0) + 12) / 24)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
@@ -168,17 +160,20 @@ normal! zt
 normal! 028l
 wincmd w
 argglobal
-edit user.tex
+edit test.tex
 let s:cpo_save=&cpo
 set cpo&vim
-map <buffer> <F6> :! xpdf %<.pdf >/dev/null 2>&1 & 
-map <buffer> <F5> :! pdflatex % 
+vmap <buffer> <F4> :s:^\( *\)% :\1:e
+vmap <buffer> <F3> :s:^:% :
+nmap <buffer> <silent> <F4> :set opfunc=TeXUnCommentg@
+nmap <buffer> <silent> <F3> :set opfunc=TeXCommentOutg@
+nmap <buffer> <F6> :call TeXDisplay() 
+nmap <buffer> <F5> :call TeXCompile() 
 let &cpo=s:cpo_save
 unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
-setlocal autoread
 setlocal nobinary
 setlocal bufhidden=
 setlocal buflisted
@@ -209,6 +204,7 @@ setlocal foldexpr=0
 setlocal foldignore=#
 setlocal foldlevel=0
 setlocal foldmarker={{{,}}}
+set foldmethod=syntax
 setlocal foldmethod=marker
 setlocal foldminlines=1
 setlocal foldnestmax=20
@@ -279,14 +275,17 @@ argglobal
 edit xargs.dtx
 let s:cpo_save=&cpo
 set cpo&vim
-map <buffer> <F6> :! xpdf %<.pdf >/dev/null 2>&1 & 
-map <buffer> <F5> :! pdflatex % 
+vmap <buffer> <F4> :s:^\( *\)% :\1:e
+vmap <buffer> <F3> :s:^:% :
+nmap <buffer> <silent> <F4> :set opfunc=TeXUnCommentg@
+nmap <buffer> <silent> <F3> :set opfunc=TeXCommentOutg@
+nmap <buffer> <F6> :call TeXDisplay() 
+nmap <buffer> <F5> :call TeXCompile() 
 let &cpo=s:cpo_save
 unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
-setlocal autoread
 setlocal nobinary
 setlocal bufhidden=
 setlocal buflisted
@@ -317,7 +316,8 @@ setlocal foldexpr=0
 setlocal foldignore=#
 setlocal foldlevel=0
 setlocal foldmarker={{{,}}}
-setlocal foldmethod=manual
+set foldmethod=syntax
+setlocal foldmethod=syntax
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=foldtext()
@@ -370,13 +370,26 @@ setlocal syntax=tex
 endif
 setlocal tabstop=2
 setlocal tags=
-setlocal textwidth=78
+setlocal textwidth=72
 setlocal thesaurus=
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-silent! normal! zE
+126
+normal zo
+138
+normal zo
+178
+normal zo
+454
+normal zo
+454
+normal zo
+178
+normal zo
+138
+normal zo
 let s:l = 1 - ((0 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
