@@ -1,15 +1,14 @@
-% fichier de tests pour xargs (commentaires en utf8 : àéïôù)
+%% fichier de tests pour xargs (commentaires en utf8 : àéïôù)
 
-%{{{ section fixe : « préambule »
-%{{{ classe et extensions
+%% section fixe : « préambule » {{{1
+%% classe et extensions {{{2
 \documentclass{article}
 \usepackage[ascii]{inputenc}
-\usepackage[t1]{fontenc}
+\usepackage[T1]{fontenc}
 
-\usepackage{xargs}
-%}}}
+\usepackage{xargs, trace}
 
-%{{{ définitions d'outils de test : \showcmd et \showenv
+%% définitions d'outils de test : \showcmd et \showenv {{{2
 \makeatletter
 
 \newcommand\showcmd[1]{%
@@ -44,138 +43,135 @@
   \expandafter\show\csname end#1\endcsname}
 
 \makeatother
-%}}} définitions
-%}}} section fixe
 
-%%{{{ test des outils de test sur les macros LaTeX 
+%% test des outils de test sur les macros LaTeX  {{{1
 %%    (et valeurs de référence pour le préfixe)
+
 %% test de \showcmd sur des cs-mots
-%\newcommand\sct{bla}
-%\showcmd\sct
-%\DeclareRobustCommand\sctt{bla}
-%\showcmd\sctt
-%\newcommand\scttt[1][bla]{blabla}
-%\showcmd\scttt
-%\DeclareRobustCommand\sctttt[1][bla]{blabla}
-%\showcmd\sctttt
+% \newcommand\sct{bla}
+% \showcmd\sct
+% \DeclareRobustCommand\sctt{bla}
+% \showcmd\sctt
+% \newcommand\scttt[1][bla]{blabla}
+% \showcmd\scttt
+% \DeclareRobustCommand\sctttt[1][bla]{blabla}
+% \showcmd\sctttt
+
 %% test sur des cs-symbole pour \DRC
-%\DeclareRobustCommand\+{bla}
-%\showcmd\+
-%\DeclareRobustCommand\*[1][bla]{blabla}
-%\showcmd\*
+% \DeclareRobustCommand\+{bla}
+% \showcmd\+
+% \DeclareRobustCommand\*[1][bla]{blabla}
+% \showcmd\*
+
 %% test de \showenv
-%\newenvironment{set}{B-bla}{E-bla}
-%\showenv{set}
-%\newenvironment{set*}[1][ouf]{B-bla}{E-bla}
-%\showenv{set*}
-%\stop
-%%}}} test des outils de test
+% \newenvironment{set}{B-bla}{E-bla}
+% \showenv{set}
+% \newenvironment{set*}[1][ouf]{B-bla}{E-bla}
+% \showenv{set*}
 
-%%{{{ le point sur \newcommand, les # et les \if
-% \newcommand*\hasht[1][ab#cd]{def} % Explose.
-%\newcommand*\hasht[1][a]{\showtokens{(#1)}}
-%\hasht[a#b]
-%\newcommand*\tif[1][\ifcat]{\showtokens{\ifx#1\ifnum}}
-%\showcmd\tif
-%\tif[\if]
-%\stop
-% morale de l'histoire : les \if marchent partout,
-% les # marchent dans un arg optionel mais pas dans une valeur par défaut
-%%}}} le point sur \newcommand, les # et les \if
+% \stop
 
-%%{{{ comportement avec des \ifs
-%\tracingmacros1
-%\newcommandx\txif[1][1=\ifcat]{\showtokens{(#1)}}
-%\stop
-%%}}} comportement avec des \ifs
+%% le point sur \newcommand, les # et les \if {{{1
+% % \newcommand*\hasht[1][ab#cd]{def} % Explose.
+% \newcommand*\hasht[1][a]{\showtokens{(#1)}}
+% \hasht[a#b]
+% \newcommand*\tif[1][\ifcat]{\showtokens{\ifx#1\ifnum}}
+% \showcmd\tif
+% \tif[\if]
+% \stop
+%% morale de l'histoire : les \if marchent partout,
+%% les # marchent dans un arg optionel mais pas dans une valeur par défaut
 
-%%{{{ macros de definition (ie tt sf \CC) cas simples
-% newcommandx, trois cas de base (cf choose@def) + @ifdefinable
-%\newcommandx\ncst{blat}
-%\showcmd\ncst
-%\newcommandx\ncstt[2][1=tt1]{blatt}
-%\showcmd\ncstt
-%\newcommandx\ncsttt[2][2=ttt2]{blattt}
-%\showcmd\ncsttt
-%\newcommandx\ncsttt[2][2=non]{horreur} % -> 1 erreur
-%\showcmd\ncsttt % pareil qu'avant
+%% comportement avec des \ifs {{{1
+% \newcommandx\txif[1][1=\ifcat]{\showtokens{(#1)}}
+% \stop
+%% Morale : on laisse tomber (xkeyval)
+
+%% macros de définitions (pas \DRCx), cas simples
+
+%% newcommandx, trois cas de base (cf choose@def) + @ifdefinable
+% \newcommandx\ncst{blat}
+% \showcmd\ncst
+% \newcommandx\ncstt[2][1=tt1]{blatt}
+% \showcmd\ncstt
+% \newcommandx\ncsttt[2][2=ttt2]{blattt}
+% \showcmd\ncsttt
+% \newcommandx\ncsttt[2][2=non]{horreur} % -> 1 erreur
+% \showcmd\ncsttt % pareil qu'avant
+
 %% désormais je ne teste plus que le cas non-trivial de choose@def
 % \renewcommandx : un cas + @ifdefinable
-%\renewcommandx\ncst[2][2=rt2]{blart}
-%\showcmd\ncst
-%\renewcommandx\rct[2][2=non]{horreur} % -> 1 erreur
-%\showcmd\rct % undefined
-% \provide command : un cas + @ifdefinable
-%\providecommandx\pcst[2][2=ipt2]{blapt}
-%\showcmd\pcst
-%\procvidecommandx\ncst[2][2=non]{horreur} % doit ne rien faire
-%\showcmd\ncst % toujours [2][2=rt1]{blart}
-% \DRCx : deux cas (cs-mot ou pas) + @ifdefinable
-%\DeclareRobustCommandx\drcst[2][2=drct2]{bladrct}
-%\showcmd\drcst
-%\DeclareRobustCommandx\ncst[2][2=drct2]{redef} % -> warning mais redef
-%\showcmd\ncst % ci-dessus
-% \newenvironmentx : 1 cas + @ifdef
-%\newenvironmentx{net}[2][2=net2]{B-net}{E-net}
-%\showenv{net}
-%\newenvironmentx{net}[2][2=non]{B-pas}{E-bien} % -> 1 erreur
-%\showenv{net} % pareil qu'avant
-% \renewenvironmentx : 1 cas + @ifdef
-%\renewenvironmentx{net}[2][2=rnet2]{B-rnet}{E-rnet}
-%\showenv{net}
-%\renewenvironmentx{net*}[2][2=non]{B-pas}{E-bien} % -> 1 erreur
-%\showenv{net*} % undefined
-%\stop
-%%}}} macros de definition (ie tt sf \CC) cas simples
+% \renewcommandx\ncst[2][2=rt2]{blart}
+% \showcmd\ncst
+% \renewcommandx\rct[2][2=non]{horreur} % -> 1 erreur
+% \showcmd\rct % undefined
 
-%{{{ tests pour addprefix
-%\stop
-%}}} tests pour addprefix
+%% \provide command : un cas + @ifdefinable
+% \providecommandx\pcst[2][2=ipt2]{blapt}
+% \showcmd\pcst
+% \procvidecommandx\ncst[2][2=non]{horreur} % doit ne rien faire
+% \showcmd\ncst % toujours [2][2=rt1]{blart}
 
-%{{{ chantier
-%\tracingmacros1
-\begingroup
+%% \DRCx : deux cas (cs-mot ou pas) + @ifdefinable
+% \DeclareRobustCommandx\drcst[2][2=drct2]{bladrct}
+% \showcmd\drcst
+% \DeclareRobustCommandx\ncst[2][2=drct2]{redef} % -> warning mais redef
+% \showcmd\ncst % ci-dessus
+
+%% \newenvironmentx : 1 cas + @ifdef
+% \newenvironmentx{net}[2][2=net2]{B-net}{E-net}
+% \showenv{net}
+% \newenvironmentx{net}[2][2=non]{B-pas}{E-bien} % -> 1 erreur
+% \showenv{net} % pareil qu'avant
+
+%% \renewenvironmentx : 1 cas + @ifdef
+% \renewenvironmentx{net}[2][2=rnet2]{B-rnet}{E-rnet}
+% \showenv{net}
+% \renewenvironmentx{net*}[2][2=non]{B-pas}{E-bien} % -> 1 erreur
+% \showenv{net*} % undefined
+
+% \stop
+
+%% tests pour addprefix {{{1
+% \stop
+
+%% chantier {{{1
+% \begingroup
 % \newcommandx*\reuh[2][2, addprefix=\global\long\protected\long]{(#1|#2)}
 % \newenvironmentx{abc}[2][2, addprefix=\global\protected]{abc}{def}
-%\renewcommandx\reuh[1][addprefix=\global]{X#1X}
-\endgroup
-%\showenv{abc}
-%\showcmd\reuh
+% \renewcommandx\reuh[1][addprefix=\global]{X#1X}
+% \endgroup
+% \showenv{abc}
+% \showcmd\reuh
 % \let\reuh\relax
 % \newcommand\reuh[2][]{abc}
 % \showcmd\reuh
-\tracingmacros0
-%\stop
-%}}} chantier
+% \stop
 
-%{{{ section fixe : begin-doc
+%% section fixe : begin-doc {{{1
 \begin{document}
 \tableofcontents
 Bla.
 \section{truc}
 Foubarre.\par\bigskip
-%}}} section fixe
 
-%%{{{ test pour usedefault
-%\begingroup
-%\newcommandx*\foo[3][1=a, 2=b, 3=c]{(#1,#2,#3)}
-%\foo[][B] 123 should be (,B,c)123 \par
-%\foo[][][C] 123 should be (,,C)123 \par
-%\medskip
-%\newcommandx*\fooo[3][usedefault, 1=a, 2=b, 3=c]{(#1,#2,#3)}
-%\fooo[][B] 123 should be (a,B,c)123 \par
-%\fooo[][][C] 123 should be (a,b,C)123 \par
-%\medskip
-%\newcommandx*\foooo[3][usedefault=default, 1=a, 2=b, 3=c]{(#1,#2,#3)}
-%\foooo[][B] 123 should be (,B,c)123 \par
-%\foooo[][][C] 123 should be (,,C)123 \par
-%\foooo[default][B] 123 should be (a,B,c)123 \par
-%\foooo[default][][C] 123 should be (a,,C)123 \par
-%\endgroup
-%%}}} test pour usedefault
+%% test pour usedefault {{{1
+% \newcommandx*\foo[3][1=a, 2=b, 3=c]{(#1,#2,#3)}
+% \foo[][B] 123 should be (,B,c)123 \par
+% \foo[][][C] 123 should be (,,C)123 \par
+% \medskip
+% \newcommandx*\fooo[3][usedefault, 1=a, 2=b, 3=c]{(#1,#2,#3)}
+% \fooo[][B] 123 should be (a,B,c)123 \par
+% \fooo[][][C] 123 should be (a,b,C)123 \par
+% \medskip
+% \newcommandx*\foooo[3][usedefault=default, 1=a, 2=b, 3=c]{(#1,#2,#3)}
+% \foooo[][B] 123 should be (,B,c)123 \par
+% \foooo[][][C] 123 should be (,,C)123 \par
+% \foooo[default][B] 123 should be (a,B,c)123 \par
+% \foooo[default][][C] 123 should be (a,,C)123 \par
+% \stop
 
-%{{{ section fixe : end-doc
+%% section fixe : end-doc {{{1
 \end{document}
-%}}} section fixe
 
 % vim: set fdm=marker:

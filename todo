@@ -71,7 +71,7 @@
     argument obligatoire. Cela en vaut-il vraiment la peine ?
         En fait, c'est sans doute plus facile de déterminer le dernier
         emplacement si on construit le parseur en partant de la fin. 
-        Même comme ça, c'est pas clair que ça en vaut la peine, et iul faut
+        Même comme ça, c'est pas clair que ça en vaut la peine, et il faut
         peut-être mieux que le traitement soit identique sur tous les espaces.
             Rajouter une option pour ça dans newcx, plus une globale pour
             choisir le comportement par défaut.
