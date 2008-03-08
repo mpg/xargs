@@ -30,11 +30,11 @@
 %<*package>
 % \fi
 % \ProvidesFile{xargs.dtx}
-  [2008/01/20 1.0+ \space extended macro definitions \space (mpg)]
+  [2008/03/08 1.09 \space extended macro definitions \space (mpg)]
 % \iffalse
 %</package>
 % \fi
-% \CheckSum{0}
+% \CheckSum{786}
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -343,17 +343,16 @@ This is a generated file. See xargs.dtx for license information.
 % \begin{center}
 % |\newcommandx*\vect[3][1=1, 3=n]{(#2_{#1},\ldots,#2_{#3})}|
 % \end{center}
-% ^^A ^^A (checking spurious spaces by the way)
-% ^^A y\newcommandx*\vect[3][1=1, 3=n]{(#2_{#1},\ldots,#2_{#3})}ou can use
-% ^^A \cs{vect} like this:
-% ^^A \begin{center}
-% ^^A \begin{tabular}{ll}
-% ^^A |$\vect{x}$| & $\vect{x}$ \\
-% ^^A |$\vect[0]{y}$| & $\vect[0]{y}$ \\
-% ^^A |$\vect{z}[m]$| & $\vect{z}[m]$ \\
-% ^^A |$\vect[0]{t}[m]$| & $\vect[0]{t}[m]$ \\
-% ^^A \end{tabular}
-% ^^A \end{center}
+% \newcommandx*\vect[3][1=1, 3=n]{(#2_{#1},\ldots,#2_{#3})} 
+% you can use \cs{vect} like this:
+% \begin{center}
+% \begin{tabular}{ll}
+% |$\vect{x}$| & $\vect{x}$ \\
+% |$\vect[0]{y}$| & $\vect[0]{y}$ \\
+% |$\vect{z}[m]$| & $\vect{z}[m]$ \\
+% |$\vect[0]{t}[m]$| & $\vect[0]{t}[m]$ \\
+% \end{tabular}
+% \end{center}
 %
 % You surely understood \cs{vect} is now a macro with 3 arguments, the first
 % and third being optional. They both have their own default value (resp.
@@ -604,7 +603,7 @@ This is a generated file. See xargs.dtx for license information.
 %    \begin{macrocode}
 \@ifdefinable\xargs@grab@opt{%
   \long\def\xargs@grab@opt#1[#2]{%
-    \def\xargs@temp{#2}%
+    \toks@{#2}\edef\xargs@temp{\the\toks@}%
     \ifx\xargs@temp\xargs@default@flag 
       \expandafter\@firstoftwo
     \else
@@ -699,11 +698,12 @@ This is a generated file. See xargs.dtx for license information.
 %    \end{macrocode}
 %
 % Now, another particular key is the |usedefault| key. When used, it just sets
-% \cs{xargs@default@flag}. Later on, this will be used to possibly introduce a
-% \cs{xargs@set@default} action at the beginning of the actions list. 
+% \cs{xargs@default@flag} and the corresponding boolean. Later on, this
+% will be used to possibly introduce a \cs{xargs@set@default} action at
+% the beginning of the actions list. 
 %    \begin{macrocode}
 \define@key[xargs]{key}{usedefault}[]{%
-  \def\xargs@default@flag{#1}}
+  \xargs@toksa{#1}\edef\xargs@default@flag{\the\xargs@toksa}}
 %    \end{macrocode}
 % 
 % 
@@ -909,11 +909,18 @@ This is a generated file. See xargs.dtx for license information.
       \fi
     \fi
 %    \end{macrocode}
-% Finally expand the stuff to the next macro and, while we're at it, choose
-% the next macro : depending of the existence and place of an optional
-% argument, use \LaTeX's or \pf{xargs}'s way. In the \LaTeX{} case, however,
-% we don't use \cs{@argdef} or \cs{xargdef} since we want to be able to use a
-% prefix (and we have more work done allready, too).
+% Before we do the definitions, remember to execute \cs{xargs@drc@hook},
+% since the next macros will only define the internal macro(s) with a
+% \cs{DeclareRobustCommandx}, and the hook defines the user macro, with
+% the correct prefix now.
+%    \begin{macrocode}
+    \xargs@drc@hook
+%    \end{macrocode}
+% Finally expand the stuff to the next macro and, while we're at it,
+% choose the next macro : depending of the existence and place of an
+% optional argument, use \LaTeX's or \pf{xargs}'s way. In the \LaTeX{}
+% case, however, we don't use \cs{@argdef} or \cs{xargdef} since we want
+% to be able to use a prefix (and we have more work done allready, too).
 %    \begin{macrocode}
     \edef\xargs@temp{%
       \ifxargs@otheropt@ \noexpand\xargs@xargsdef \else
@@ -923,11 +930,10 @@ This is a generated file. See xargs.dtx for license information.
       \noexpand#1%
       \expandafter\noexpand\csname\string#1\endcsname
       {\the\xargs@toksa}{\the\xargs@toksb}}%
-%    \begin{macrocode}
-% Now we can close the group and forget all about key values, etc. Time to
-% conclude and actually define the macro. (The only thing not passed as an
-% argument is the prefix, which is globally set.)
 %    \end{macrocode}
+% Now we can close the group and forget all about key values, etc. Time
+% to conclude and actually define the macro. (The only thing not passed
+% as an argument is the prefix, which is globally set.)
 %    \begin{macrocode}
     \expandafter\endgroup
     \xargs@temp}}
@@ -1181,17 +1187,20 @@ This is a generated file. See xargs.dtx for license information.
   \edef\reserved@a{\string#1}%
   \def\reserved@b{#1}%
   \edef\reserved@b{\expandafter\strip@prefix\meaning\reserved@b}%
-  \edef#1{%
-    \ifx\reserved@a\reserved@b
-      \noexpand\x@protect
-      \noexpand#1%
-    \fi
+  \edef\xargs@drc@hook{%
+    \noexpand\xargs@shortpref\def\noexpand#1{%
+      \ifx\reserved@a\reserved@b
+        \noexpand\x@protect
+        \noexpand#1%
+      \fi
       \noexpand\protect
       \expandafter\noexpand\csname
       \expandafter\@gobble\string#1 \endcsname}%
+    \expandafter\let\noexpand\xargs@drc@hook\relax}%
   \let\@ifdefinable\@rc@ifdefinable
   \expandafter\xargs@newc\csname
   \expandafter\@gobble\string#1 \endcsname}
+\let\xargs@drc@hook\relax
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -1229,7 +1238,7 @@ This is a generated file. See xargs.dtx for license information.
     \relax
   \expandafter\xargs@newc
     \csname #1\endcsname#2{#3}%
-  \xargs@prefix\expandafter\def\csname end#1\endcsname{#4}}
+  \xargs@shortpref\expandafter\def\csname end#1\endcsname{#4}}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}

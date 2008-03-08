@@ -23,44 +23,43 @@
 
 [ ] Relire les usages de \@onlypreamble (fautes de frappe).
 
-[x] Revoir les conditions d'explosion de \newcommand avec des # (et pourquoi pas
-    des \if) et s'assurer que les miennes soient au moins aussi restricitves.
-    - Résultat : tout marche bien avec les \if, les # dans un argument optionel
+[x] Revoir les conditions d'explosion de \newcommand avec des # ou des \if.
+    -> Résultat : tout marche bien avec les \if, les # dans un argument optionel
     sont OK, mais pas dans une valeur par défaut. 
-    - Pour moi, implique d'utiliser ted pour se protéger des # en cas de
-      usedefault, ou admettre que # et usedefault sont incompatibles. (Ou alors
-    mettre useted comme option.)
-    -> Pour le moment, on abandonne les # et les \ifs qui exigeraient un
-    prétraitement considérable par ted pour une utilité douteuse.
 
 [x] Mettre tout le code de parsing dans un groupe, par propreté.
 
 [ ] [fait, mais] Ajouter une option pour le préfixe (\long, etc)
-    [ ] Regarder individuellement chaque variante : choix du comportement
+    [x] Regarder individuellement chaque variante : choix du comportement
     adéquat, test de ce comportement. (En part, env et \DRCx.) (Tenir compte de
     la compatibilité LaTeX.)
     [ ] Regarder pour \CheckCommandx.
 
-[x] (Abandon) Rendre tout robuste à la présence de \if !  
+[x] (Abandon) Rendre tout robuste à la présence de \if et de # !
     État actuel : ok (sous réserves) pour les \if dans le texte de def ou dans
-    les valeurs d'arguments, mais PB si \if dans une valeur par défaut.
+    les valeurs d'arguments, mais PB si \if dans une <liste>.
     -> Résultat : le problème avec les \if vient de xkeyval. À moins d'un
     pré-traitement intensif par ted, il n'y a rien à faire. On abandonne sur ce
     front.
-    
+    Pour les #, même combat : ils marchent partout mais pas dans une <liste>.
+    Même motif, même punition.
+
+[ ] Documenter les limitations connues dans une sous-section à part (#, \if,
+    \par).
+
 [x] Voir le truc à la \newlyxcommand... (Envoyé, en attente de retour des
     tests.)
 
-[ ] Vérifier les usages de \xargs@temp (portée, tout ça) (pas grave au fond)...
-    ->  Relire le code.
+% Plus tard, ou à repenser
+% ------------------------
 
 [ ] Mettre des \@ifdefinable autour des \define@key ? (Revoir les \@ifdefinable
     des macros internes genre \xargs@prefix, \xargs@default@flag, etc. Remarquer
     aussi que pas mal des trucs arrivent dans un groupe...) Point à joindre avec
     la vérification des usages de \xargs@temp. (Priorité basse.)
 
-% Plus tard, ou à repenser
-% ------------------------
+[ ] Vérifier les usages de \xargs@temp (portée, tout ça) (pas grave au fond)...
+    ->  Relire le code.
 
 [ ] Ajouter l'option ted. Bof-bof en fait : de toutes façons xkeyval limite,
     pour les if en plus des par. Peut-être rester simple et juste créer une

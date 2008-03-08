@@ -26,17 +26,18 @@ such commands, using a nice key=value syntax.
 Contents
 --------
 
-xargs.sty: the package itself
-xargs.pdf: the (english) documentation and documented code
-xargs-fr.pdf: the french documentation
+xargs.sty:      the package itself
+xargs.pdf:      the (English) documentation and documented code
+xargs-fr.pdf:   the French documentation
 
-xargs.dtx: source for both documentations and package
-xargs.ins: the docstrip driver
+xargs.dtx:      source for both documentations and package
 
 Version info
 ------------
 
 2007-10-20  v1.0    first release
+2008-03-08  v1.09   Added the usedefault and addprefix keys, not
+                    documented yet...
 
 License
 -------

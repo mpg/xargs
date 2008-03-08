@@ -87,7 +87,7 @@
 % \stop
 %% Morale : on laisse tomber (xkeyval)
 
-%% macros de définitions (pas \DRCx), cas simples
+%% macros de définitions (pas \DRCx), cas simples {{{1
 
 %% newcommandx, trois cas de base (cf choose@def) + @ifdefinable
 % \newcommandx\ncst{blat}
@@ -133,6 +133,37 @@
 % \stop
 
 %% tests pour addprefix {{{1
+
+% %% \newcommandx
+% \begingroup
+% \newcommandx\ncai[2][addprefix=\global\protected]{def nca1}
+% \newcommandx\ncaii[2][1=foo, addprefix=\global\protected]{def nca2}
+% \newcommandx\ncaiii[2][2=foo, addprefix=\global\protected]{def nca3}
+% \endgroup
+% \showcmd\ncai
+% \showcmd\ncaii
+% \showcmd\ncaiii
+
+% %% \newenvironmentx
+% \begingroup
+% \newenvironmentx{neai}[2][addprefix=\global\protected]{bnea1}{enea1}
+% \newenvironmentx{neaii}[2][1=foo, addprefix=\global\protected]{bnea2}{enea2}
+% \newenvironmentx{neaiii}[2][2=foo, addprefix=\global\protected]{bnea3}{enea3}
+% \endgroup
+% \showenv{neai}
+% \showenv{neaii}
+% \showenv{neaiii}
+
+%% \newcommandx
+% \begingroup
+% \DeclareRobustCommandx\drcai[2][addprefix=\global\protected]{drca1}
+% \DeclareRobustCommandx\drcaii[2][1=foo, addprefix=\global\protected]{drca2}
+% \DeclareRobustCommandx\drcaiii[2][2=foo, addprefix=\global\protected]{drca3}
+% \endgroup
+% \showcmd\drcai
+% \showcmd\drcaii
+% \showcmd\drcaiii
+
 % \stop
 
 %% chantier {{{1
@@ -156,20 +187,19 @@ Bla.
 Foubarre.\par\bigskip
 
 %% test pour usedefault {{{1
-% \newcommandx*\foo[3][1=a, 2=b, 3=c]{(#1,#2,#3)}
-% \foo[][B] 123 should be (,B,c)123 \par
-% \foo[][][C] 123 should be (,,C)123 \par
-% \medskip
-% \newcommandx*\fooo[3][usedefault, 1=a, 2=b, 3=c]{(#1,#2,#3)}
-% \fooo[][B] 123 should be (a,B,c)123 \par
-% \fooo[][][C] 123 should be (a,b,C)123 \par
-% \medskip
-% \newcommandx*\foooo[3][usedefault=default, 1=a, 2=b, 3=c]{(#1,#2,#3)}
-% \foooo[][B] 123 should be (,B,c)123 \par
-% \foooo[][][C] 123 should be (,,C)123 \par
-% \foooo[default][B] 123 should be (a,B,c)123 \par
-% \foooo[default][][C] 123 should be (a,,C)123 \par
-% \stop
+\newcommandx*\foo[3][1=a, 2=b, 3=c]{(#1,#2,#3)}
+\foo[][B] 123 should be (,B,c)123 \par
+\foo[][][C] 123 should be (,,C)123 \par
+\medskip
+\newcommandx*\fooo[3][usedefault, 1=a, 2=b, 3=c]{(#1,#2,#3)}
+\fooo[][B] 123 should be (a,B,c)123 \par
+\fooo[][][C] 123 should be (a,b,C)123 \par
+\medskip
+\newcommandx*\foooo[3][usedefault=default, 1=a, 2=b, 3=c]{(#1,#2,#3)}
+\foooo[][B] 123 should be (,B,c)123 \par
+\foooo[][][C] 123 should be (,,C)123 \par
+\foooo[default][B] 123 should be (a,B,c)123 \par
+\foooo[default][][C] 123 should be (a,,C)123 \par
 
 %% section fixe : end-doc {{{1
 \end{document}
