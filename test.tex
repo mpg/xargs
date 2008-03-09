@@ -187,21 +187,18 @@ Bla.
 Foubarre.\par\bigskip
 
 %% test pour usedefault {{{1
-\newcommandx*\foo[3][1=a, 2=b, 3=c]{(#1,#2,#3)}
-\foo[][B] 123 should be (,B,c)123 \par
-\foo[][][C] 123 should be (,,C)123 \par
-\medskip
-\newcommandx*\fooo[3][usedefault, 1=a, 2=b, 3=c]{(#1,#2,#3)}
-\fooo[][B] 123 should be (a,B,c)123 \par
-\fooo[][][C] 123 should be (a,b,C)123 \par
-\medskip
-\newcommandx*\foooo[3][usedefault=default, 1=a, 2=b, 3=c]{(#1,#2,#3)}
-\foooo[][B] 123 should be (,B,c)123 \par
-\foooo[][][C] 123 should be (,,C)123 \par
-\foooo[default][B] 123 should be (a,B,c)123 \par
-\foooo[default][][C] 123 should be (a,,C)123 \par
+% \newcommandx*\foo[3][1=a, 2=b, 3=c]{(#1,#2,#3)}
+% \foo[][B] 123 should be (,B,c)123 \par
+% \foo[][][C] 123 should be (,,C)123 \par
+% \medskip
+% \newcommandx*\fooo[3][usedefault, 1=a, 2=b, 3=c]{(#1,#2,#3)}
+% \fooo[][B] 123 should be (a,B,c)123 \par
+% \fooo[][][C] 123 should be (a,b,C)123 \par
+% \medskip
+% \newcommandx*\foooo[3][usedefault=default, 1=a, 2=b, 3=c]{(#1,#2,#3)}
+% \foooo[][B] 123 should be (,B,c)123 \par
+% \foooo[][][C] 123 should be (,,C)123 \par
+% \foooo[default][B] 123 should be (a,B,c)123 \par
+% \foooo[default][][C] 123 should be (a,,C)123 \par
 
-%% section fixe : end-doc {{{1
 \end{document}
-
-% vim: set fdm=marker:
