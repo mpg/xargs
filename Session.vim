@@ -37,7 +37,7 @@ endif
 set shortmess=aoO
 badd +2 xargs.dtx
 badd +1 test.tex
-badd +0 todo
+badd +1 todo
 silent! argdel *
 edit todo
 set splitbelow splitright
@@ -314,7 +314,7 @@ setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=0
 setlocal foldignore=#
-setlocal foldlevel=0
+setlocal foldlevel=5
 setlocal foldmarker={{{,}}}
 set foldmethod=syntax
 setlocal foldmethod=syntax
@@ -376,20 +376,6 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-126
-normal zo
-138
-normal zo
-178
-normal zo
-454
-normal zo
-454
-normal zo
-178
-normal zo
-138
-normal zo
 let s:l = 1 - ((0 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l

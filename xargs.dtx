@@ -173,14 +173,13 @@ This is a generated file. See xargs.dtx for license information.
 % \else
 %
 % Defining commands with an optional argument is easy in \LaTeXe{}.
-% There is, however, two limitations: there can be at most one optional
-% argument and it must be the first one. The \pf{xargs} package provide
+% There is, however, two limitations: you can make only one argument
+% optional and it must be the first one. The \pf{xargs} package provide
 % extended variants of \cs{newcommand} \& friends, for which these
-% limitations no longer hold.  Now you have an easy and (hopefully)
-% robust way to define such commands, using a nice
-% \meta{key}=\meta{value} syntax.  There is also an option to make the
-% definition global. But let's start with an example of a command with
-% two optional arguments.
+% limitations no longer hold:  It is now easy to define commands with
+% many (and freely placed) optional arguments, using a nice
+% \meta{key}=\meta{value} syntax.  For example, the following defines a
+% command with two optional arguments.
 %
 % \begin{center}
 % |\newcommandx*\coord[3][1=1, 3=n]{(#2_{#1},\ldots,#2_{#3})}|
@@ -382,7 +381,7 @@ This is a generated file. See xargs.dtx for license information.
 %
 % \medbreak
 %
-% Since these commands all share the same syntax, I will always use
+% Since these commands all share the same syntax, I'll always use
 % \cs{newcommandx} in the following, but remember it works the same for
 % all seven commands. Here is the complete syntax.
 %
@@ -440,11 +439,14 @@ This is a generated file. See xargs.dtx for license information.
 % \cs{parbox}: you can't specify the third argument if you didn't
 % specify the first two ones. For example, in my first example, please
 % notice how I used the mandatory argument to separate the two optional
-% ones. However, maybe you don't like this and want to choose your
-% argument's order as you want. Ok. Here comes the |usedefault| key.
+% ones. However, maybe you don't like this and prefer choosing your
+% argument's order as you want, according to their logical meaning. Ok.
+% That's exactly what the |usedefault| key is for. Just include it in
+% the \meta{list}, and you can now use |[]| to skip one optional
+% argument (using its default value) and go to the next one.
 %
 % \begin{center}
-% |\newcommandx*\coord[3][2=1, 3=n, usedefault]{(#2_{#1},\ldots,#2_{#3})}|
+% |\newcommandx*\coord[3][2=1,3=n,usedefault]{(#2_{#1},\ldots,#2_{#3})}|
 % \newcommandx*\coord[3][2=1, 3=n, usedefault]{(#2_{#1},\ldots,#2_{#3})} 
 % \par\medskip
 % \begin{tabular}{ll}
@@ -494,7 +496,14 @@ This is a generated file. See xargs.dtx for license information.
 % know in \LaTeXe, either). Please note that it \emph{adds} a prefix to
 % the current one, which by default is \cs{long} for the unstarred
 % form, and empty for the starred form. You can also use this key many
-% times: all prefixes will be merged together.
+% times: all prefixes will be merged together. For example, the
+% following two instructions do the exactly the same thing.
+%
+% \begin{quote}
+% |\newcommandx*\foo[0][addprefix=\global, addprefix=\long,|\\
+% |  addprefix=\protected]{bar}|\\
+% |\newcommandx\foo[0][addprefix=\global\protected]{bar}|
+% \end{quote}
 %
 % By the way, macros with at least one optional argument are already
 % robust in \LaTeXe's meaning of the word, so I don't know if the
@@ -503,36 +512,46 @@ This is a generated file. See xargs.dtx for license information.
 %
 % \subsection{Compatibility and known limitations}
 %
-% The last thing you (maybe) need to know about \meta{list} is a little
-% limitation of \pf{xargs}, inherited from \pf{xkeyval}, which I didn't
-% managed to work around (actually, I know a way to do it, but it fails in
-% rare cases involving \cs{let}ing an active character equal to a brace, so I
-% decided not to include it). So what is this problem? It's just you cannot
-% use \cs{par} (or an empty line) in the \meta{list}. If you need a paragraph
-% break in a \meta{value}, try \cs{endgraf}. If this issue really bothers you,
-% please let me know.
+% Okay, let's see the bad things (the limitations) first. There is
+% essentially one: you cannot use in the \meta{list} some elements,
+% because \pf{xkeyval} won't handle them properly. Namely, hash signs
+% (tokens with \cs{catcode} $6$), and \cs{par} tokens are forbidden, and
+% any part of the list should look properly \cs{if}-balanced to \TeX.
+% Only the first limitation is shared by the standard \cs{newcommand}:
+% it accepts no hash signs in a default value. Apart from this, you can
+% use anything you want, everywhere you want, as far as I know.
+% 
+% Now the ``good'' features. I've tried hard to make macros defined with
+% \pf{xargs} as much similar as possible with those defined with
+% standard \LaTeX's commands. Actually, when \cs{newcommandx} is asked
+% to perform a definition which \cs{newcommand} can do, the resulting
+% macro will be defined exactly as the latter would have done. More
+% precisely, the following code (and similar tests) issues no warning.
 %
-% There's only three features of \pf{xargs} not yet discussed. Since they are
-% all ``good'' features, you may not need to read the end of the
-% documentation, but since I made the effort to implement it, I want to talk
-% about it. First one is that macros are made in a minimalistic way: If you
-% use \cs{newcommandx} to create a macro you could have made with
-% \cs{newcommand}, \pf{xargs} will notice and use \cs{newcommand} internally.
-% So, you can allways use \cs{newcommandx} without bothering.
+% \begin{quote}
+% |\newcommandx\foo[2][1=default]{def-foo}|\\
+% |\CheckCommand\foo[2][default]{def-foo}|\\
+% |\newcommand\baz[2]{def-baz}|\\
+% |\CheckCommandx*\baz[2][addprefix=\long]{def-baz}|
+% \end{quote}
 %
-% Second feature consist in avoiding a possible problem with spaces after a
-% macro whose last argument is optional. If defined in a naive way, such
-% macros would gobble spaces after them when the optional argument is not
-% specified, but macros created with \pf{xargs} don't, so you don't need to
-% take any special care about spaces.
+% Moreover, there are only three points (to my knowledge) where
+% \pf{xargs}'s commands differ from the kernel ones. The first one was
+% already mentioned, it is due to using \pf{xkeyval} fro precessing the
+% \meta{list}. The second and third points are meant to be good one.
+% Second point is: There is a bug\footnote{%
+% \url{http://www.latex-project.org/cgi-bin/ltxbugs2html?pr=latex/3971}}
+% in the current implementation of \cs{CheckCommand}, that I obviously
+% tried to avoid. 
 %
-% Last, \pf{xargs} macros try to behave exactly as standard \LaTeX{} macros
-% do. As far as I know, there are only two exceptions. I allready mentionned
-% the first, which is the problem with \cs{par} in default value, due to
-% \pf{xkeyval}.  The other one is that, right now, the current implementation
-% of \cs{CheckCommand} has some problems (see
-% \href{http://www.latex-project.org/cgi-bin/ltxbugs2html?pr=latex/3971}
-% {PR/3971}). I tried not to reproduce them in \cs{CheckCommandx}.
+% Last, I don't use kernel's (nor \pf{amsmath}'s) version of
+% \cs{@ifnextchar}. Indeed, a problem arises when the last argument of a
+% command is optional: we have to make a choice about what to do with
+% spaces while scanning ahead for a left square bracket. I chose to scan
+% over them, and the put them back in the text in there were no
+% optional argument. I'm no more sure it is the right thing to do, and
+% I'll probably make an option to let the user decide in a future
+% version.
 %
 % \fi
 %
@@ -986,7 +1005,8 @@ This is a generated file. See xargs.dtx for license information.
 %    \begin{macrocode}
     \@ifundefined{xargs@default@flag}{}{%
       \xargs@toksa\expandafter{%
-        \expandafter\xargs@set@defflag\expandafter{\xargs@default@flag}}}
+        \expandafter\xargs@set@defflag\expandafter{%
+          \xargs@default@flag}}}
 %    \end{macrocode}
 % Then the main loop actually builds up the two lists in the correct
 % order.
@@ -1015,10 +1035,10 @@ This is a generated file. See xargs.dtx for license information.
       \fi
     \fi
 %    \end{macrocode}
-% Before we do the definitions, remember to execute \cs{xargs@drc@hook},
-% since the next macros will only define the internal macro(s) with a
-% \cs{DeclareRobustCommandx}, and the hook defines the user macro, with
-% the correct prefix now.
+% Before we do the definitions, just execute the hook for
+% \cs{DeclareRobustCommandx}, since the next macros will only define the
+% internal macro(s) in this case, and t's up to the hook to define the
+% user macro, with the correct prefix now.
 %    \begin{macrocode}
     \xargs@drc@hook
 %    \end{macrocode}

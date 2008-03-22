@@ -44,7 +44,7 @@
     Pour les #, même combat : ils marchent partout mais pas dans une <liste>.
     Même motif, même punition.
 
-[ ] Documenter les limitations connues dans une sous-section à part (#, \if,
+[x] Documenter les limitations connues dans une sous-section à part (#, \if,
     \par).
 
 [x] Voir le truc à la \newlyxcommand... (Envoyé, en attente de retour des
@@ -61,10 +61,6 @@
 [ ] Vérifier les usages de \xargs@temp (portée, tout ça) (pas grave au fond)...
     ->  Relire le code.
 
-[ ] Ajouter l'option ted. Bof-bof en fait : de toutes façons xkeyval limite,
-    pour les if en plus des par. Peut-être rester simple et juste créer une
-    section limitations connues dans la doc ?
-
 [ ] Ajouter une option pour choisir le comportement du dernier test quant aux
     espaces. Difficile en fait : nécessite de calculer l'emplacement du dernier
     argument obligatoire. Cela en vaut-il vraiment la peine ?
@@ -80,8 +76,4 @@
     clés precode0 à precodeN, et enfin prendre les définitions en plus comme des
     arg optionnels. Pb si le mec veut la même défintition dans le cas 0 et 1
     mais pas 2. À voir quand même.
-
-Créer un \CheckEnvironmentx ?
-
-Lire optparams bien, un peu xparse, et répondre à Morten...
 
