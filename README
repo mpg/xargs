@@ -10,18 +10,17 @@ Presentation
 ------------
 
 Defining commands with an optional argument is easy in LaTeXe. There is,
-however, two limitations: there can be at most one optional argument and it must
-be the first one. The xargs package provide extended variants of \newcommand &
-friends, for which these limitations no longer hold.
+however, two limitations: only one argument can be optional and it must
+be the first one. The xargs package provide extended variants of
+\newcommand & friends, for which these limitations no longer hold. It
+allows to control what happens with many consecutive optional arguments.
+It also provide a way of making the definition global.
 
-You may know some tricks in order to define commands with many optional
-arguments, or with last argument optional, etc. Theses tricks are subject to a
-few problems (using arguments in arbitrary order can be difficult, sometimes
-space is gobbled where it should not), which can be difficult to solve.  Anyway,
-you don't want to worry about such tricky things while writing a document.
-
-The xargs package provides you with an easy and (hopefully) robust way to define
-such commands, using a nice key=value syntax.
+Some features of xargs are similar to those provided by the experimental
+`xparse' package, which also allows more flexible argument syntaxes,
+though the approach and syntax are different.  However, xargs is not
+experimental, so I hope it can be useful while waiting for a stable
+LaTeX3 release.
 
 Contents
 --------
@@ -35,9 +34,11 @@ xargs.dtx:      source for both documentations and package
 Version info
 ------------
 
-2007-10-20  v1.0    first release
+2007-10-20  v1.0    First release
 2008-03-08  v1.09   Added the usedefault and addprefix keys, not
                     documented yet...
+2008-03-22  v1.1    Updated the documentation and fixed a bug in
+                    \DeclareRobustCommandx, introduced in v1.09.
 
 License
 -------

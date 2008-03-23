@@ -6,46 +6,10 @@
 \usepackage[ascii]{inputenc}
 \usepackage[T1]{fontenc}
 
-\usepackage{xargs, trace}
+\usepackage{xargs, show2e, trace}
 
-%% définitions d'outils de test : \showcmd et \showenv {{{2
-\makeatletter
-
-\newcommand\showcmd[1]{%
-  \show#1%
-  \def\xargst@temp{\x@protect}%
-  \xargst@ifmcm{#1}{\xargst@temp}{\xargst@showisp#1}{}%
-  \def\xargst@temp{\protect}%
-  \xargst@ifmcm{#1}{\xargst@temp}{\xargst@showisp#1}{}%
-  \edef\xargst@temp{\string\@protected@testopt}%
-  \xargst@ifmcm{#1}{\xargst@temp}{%
-    \expandafter\show\csname\string#1\endcsname}{}}
-
-\newcommand\xargst@showisp[1]{%
-    \begingroup\escapechar\m@ne\expandafter\endgroup
-    \expandafter\showcmd\csname\string#1 \endcsname}
-
-\newcommand\xargst@ifmcm[2]{%
-  \edef\xargst@temp{\noexpand\xargst@ifmcm@{\meaning#1}{\meaning#2}}%
-  \xargst@temp}
-
-\newcommand*\xargst@ifmcm@[2]{%
-  \def\xargst@temp##1#2##2\@nil{%
-    \ifx\empty##2\empty
-      \expandafter\@secondoftwo
-    \else
-      \expandafter\@firstoftwo
-    \fi}%
-  \xargst@temp#1#2\@nil}
-
-\newcommand\showenv[1]{%
-  \expandafter\showcmd\csname#1\endcsname
-  \expandafter\show\csname end#1\endcsname}
-
-\makeatother
-
-%% test des outils de test sur les macros LaTeX  {{{1
-%%    (et valeurs de référence pour le préfixe)
+%% Valeurs de référence pour le préfixe {{{1
+%%    
 
 %% test de \showcmd sur des cs-mots
 % \newcommand\sct{bla}
@@ -72,6 +36,8 @@
 % \stop
 
 %% le point sur \newcommand, les # et les \if {{{1
+%%
+
 % % \newcommand*\hasht[1][ab#cd]{def} % Explose.
 % \newcommand*\hasht[1][a]{\showtokens{(#1)}}
 % \hasht[a#b]
@@ -79,17 +45,22 @@
 % \showcmd\tif
 % \tif[\if]
 % \stop
+
 %% morale de l'histoire : les \if marchent partout,
 %% les # marchent dans un arg optionel mais pas dans une valeur par défaut
 
 %% comportement avec des \ifs {{{1
+%%
+
 % \newcommandx\txif[1][1=\ifcat]{\showtokens{(#1)}}
 % \stop
+
 %% Morale : on laisse tomber (xkeyval)
 
-%% macros de définitions (pas \DRCx), cas simples {{{1
+%% macros de définitions (pas \CCx), cas simples {{{1
+%%
 
-%% newcommandx, trois cas de base (cf choose@def) + @ifdefinable
+% %% newcommandx, trois cas de base (cf choose@def) + @ifdefinable
 % \newcommandx\ncst{blat}
 % \showcmd\ncst
 % \newcommandx\ncstt[2][1=tt1]{blatt}
@@ -100,41 +71,46 @@
 % \showcmd\ncsttt % pareil qu'avant
 
 %% désormais je ne teste plus que le cas non-trivial de choose@def
-% \renewcommandx : un cas + @ifdefinable
+
+%% \renewcommandx : un cas + @ifdefinable
 % \renewcommandx\ncst[2][2=rt2]{blart}
 % \showcmd\ncst
 % \renewcommandx\rct[2][2=non]{horreur} % -> 1 erreur
-% \showcmd\rct % undefined
+% \showcmd\rct % défini quand même
 
-%% \provide command : un cas + @ifdefinable
+%% \providecommand : un cas + @ifdefinable
 % \providecommandx\pcst[2][2=ipt2]{blapt}
 % \showcmd\pcst
-% \procvidecommandx\ncst[2][2=non]{horreur} % doit ne rien faire
-% \showcmd\ncst % toujours [2][2=rt1]{blart}
+% \let\ncst\empty
+% \providecommandx\ncst[2][2=non]{horreur} % doit ne rien faire
+% \showcmd\ncst % toujours vide
 
 %% \DRCx : deux cas (cs-mot ou pas) + @ifdefinable
 % \DeclareRobustCommandx\drcst[2][2=drct2]{bladrct}
 % \showcmd\drcst
-% \DeclareRobustCommandx\ncst[2][2=drct2]{redef} % -> warning mais redef
+% \DeclareRobustCommandx\+[2][2=drcplus]{bladrcplus}
+% \showcmd\+
+% \let\ncst\empty
+% \DeclareRobustCommandx\ncst[2][2=drct2]{redef} % -> info (log) mais redef
 % \showcmd\ncst % ci-dessus
 
 %% \newenvironmentx : 1 cas + @ifdef
 % \newenvironmentx{net}[2][2=net2]{B-net}{E-net}
 % \showenv{net}
 % \newenvironmentx{net}[2][2=non]{B-pas}{E-bien} % -> 1 erreur
-% \showenv{net} % pareil qu'avant
+% \showenv{net} % début comme avant, fin comme après (!)
 
 %% \renewenvironmentx : 1 cas + @ifdef
 % \renewenvironmentx{net}[2][2=rnet2]{B-rnet}{E-rnet}
 % \showenv{net}
 % \renewenvironmentx{net*}[2][2=non]{B-pas}{E-bien} % -> 1 erreur
-% \showenv{net*} % undefined
+% \showenv{net*} % quand même défini
 
 % \stop
 
 %% tests pour addprefix {{{1
 
-% %% \newcommandx
+%% \newcommandx
 % \begingroup
 % \newcommandx\ncai[2][addprefix=\global\protected]{def nca1}
 % \newcommandx\ncaii[2][1=foo, addprefix=\global\protected]{def nca2}
@@ -186,7 +162,9 @@ Bla.
 \section{truc}
 Foubarre.\par\bigskip
 
-%% test pour usedefault {{{1
+%% usedefault {{{1
+%%
+
 % \newcommandx*\foo[3][1=a, 2=b, 3=c]{(#1,#2,#3)}
 % \foo[][B] 123 should be (,B,c)123 \par
 % \foo[][][C] 123 should be (,,C)123 \par
@@ -201,4 +179,5 @@ Foubarre.\par\bigskip
 % \foooo[default][B] 123 should be (a,B,c)123 \par
 % \foooo[default][][C] 123 should be (a,,C)123 \par
 
+%% fixe : end-doc {{{1
 \end{document}

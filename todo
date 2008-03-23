@@ -4,51 +4,18 @@
 % Pour la prochaine version
 % -------------------------
 
-[ ] Penser à décommenter le test dans la doc. De façon générale, bien relire la
-    doc et surtout celle du code en ajoutant les \begin{macro} kivonbien. (Tenir
-    compte des trucs gribouillés sur papier v1.0 pour commencer.) (Créer, sous
-    une forme ou une autre, des sous-section et les munir de liens cliquables
-    (cf minitoc).)
-
-[ ] Suite de test :
-    [ ] test de chaque commande, cas de base ; (reste \CCx à faire)
-    [ ] gestion des arguments : indep de la forme (courte) et de l'ordre ;
-    [ ] préfixe pour chaque commande + \Check-compatibilité avec LaTeX ;
-    [ ] présence de \ifs (def, val par défaut, val d'arguments (opt ou pas)) ;
+[ ] Préparer une suite de test, puis la passer (croix en début de ligne) :
+ x  [x] macros de définition, cas de base ; 
+ x  [x] usage des macros définies, cas de base ; (fait dans la doc)
+    [ ] test de \CCx en interne ;
+ x  [x] préfixe pour chaque commande ;
+    [ ] \Check-compatibilité avec LaTeX, notamment pour le préfixe ;
+ x  [x] usage des commandes, avec usedefault ;
     [ ] espaces parasites pour chaque commande dans un max de situations ;
-    [ ] présence de \par partout (avec ou sans ted) ;
-    [ ] robustesse des commandes définies ;
+    [ ] présence de \par partout sauf dans <liste> ;
+    [ ] robustesse au sens \protect des commandes définies ;
     [ ] messages d'erreur ;
     [ ] c'est tout pour cette fois...
-
-[ ] Relire les usages de \@onlypreamble (fautes de frappe).
-
-[x] Revoir les conditions d'explosion de \newcommand avec des # ou des \if.
-    -> Résultat : tout marche bien avec les \if, les # dans un argument optionel
-    sont OK, mais pas dans une valeur par défaut. 
-
-[x] Mettre tout le code de parsing dans un groupe, par propreté.
-
-[ ] [fait, mais] Ajouter une option pour le préfixe (\long, etc)
-    [x] Regarder individuellement chaque variante : choix du comportement
-    adéquat, test de ce comportement. (En part, env et \DRCx.) (Tenir compte de
-    la compatibilité LaTeX.)
-    [ ] Regarder pour \CheckCommandx.
-
-[x] (Abandon) Rendre tout robuste à la présence de \if et de # !
-    État actuel : ok (sous réserves) pour les \if dans le texte de def ou dans
-    les valeurs d'arguments, mais PB si \if dans une <liste>.
-    -> Résultat : le problème avec les \if vient de xkeyval. À moins d'un
-    pré-traitement intensif par ted, il n'y a rien à faire. On abandonne sur ce
-    front.
-    Pour les #, même combat : ils marchent partout mais pas dans une <liste>.
-    Même motif, même punition.
-
-[x] Documenter les limitations connues dans une sous-section à part (#, \if,
-    \par).
-
-[x] Voir le truc à la \newlyxcommand... (Envoyé, en attente de retour des
-    tests.)
 
 % Plus tard, ou à repenser
 % ------------------------
